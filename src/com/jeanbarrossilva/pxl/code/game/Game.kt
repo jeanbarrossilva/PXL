@@ -1,45 +1,50 @@
 package com.jeanbarrossilva.pxl.code.game
 
-import com.jeanbarrossilva.pxl.code.game.actor.GameActor
-import com.jeanbarrossilva.pxl.code.game.actor.GameActorType.*
+import com.jeanbarrossilva.pxl.code.game.GameActor.*
+import com.jeanbarrossilva.pxl.code.game.GameState.*
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.events.EventListener
 import org.w3c.dom.events.KeyboardEvent
-import kotlin.browser.document
 import kotlin.browser.window
 
-data class Game(
-	val actors: List<GameActor>
-) {
-	private val currentPlayer = actors.find { it.type is Player && it.id == "player1" }
+class Game(val canvas: HTMLCanvasElement) {
+	internal var state: GameState = Waiting
 	
-	private fun configViewModel() = with(GameViewModel) {
-		// actors.add(this@Game.actors)
+	private val currentPlayer = Player("player1", x = 8.0, y = 8.0).apply {
+		window.addEventListener("keydown", EventListener { isMovableIn(this@Game, event = it as KeyboardEvent) }, true)
 	}
 	
-	fun drawIn(canvas: HTMLCanvasElement) {
-		(canvas.getContext("2d") as CanvasRenderingContext2D).apply {
-			clearRect(x = 0.0, y = 0.0, h = canvas.height.toDouble(), w = canvas.width.toDouble())
-			
-			actors.forEach { actor ->
-				fillStyle = when (actor.type) {
-					is Player -> "black"
-					is Fruit -> "green"
-				}
+	private val actors = mutableListOf<GameActor>()
+	
+	private fun drawActors(): Unit =
+		with(canvas) {
+			(getContext("2d") as CanvasRenderingContext2D).apply {
+				clearRect(x = 0.0, y = 0.0, w = width.toDouble(), h = height.toDouble())
 				
-				fillRect(x = actor.x.toDouble(), y = actor.y.toDouble(), w = 1.0, h = 1.0)
+				actors.filterIsInstance<Player>().forEach { player ->
+					fillStyle = if (player == currentPlayer) "blue" else "gray"
+					fillRect(player.x, player.y, 1.0, 1.0)
+					
+					console.log("[game] ${player.id} has been successfully added.")
+				}
 			}
+			
+			window.requestAnimationFrame { drawActors() }
 		}
+	
+	fun start() {
+		state = InProgress
+		actors.add(currentPlayer)
+		drawActors()
 		
-		window.requestAnimationFrame {
-			drawIn(canvas)
-		}
+		console.log("[game] Game started.")
 	}
 	
-	init {
-		currentPlayer?.let { player ->
-			document.addEventListener("keydown", EventListener { GameViewModel.movePlayer(player.id, it as KeyboardEvent) })
-		}
+	fun stop() {
+		state = Finished
+		actors.clear()
+		
+		console.log("[game] Game stopped.")
 	}
 }
