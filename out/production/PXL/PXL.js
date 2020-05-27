@@ -3,6 +3,7 @@ if (typeof kotlin === 'undefined') {
 }var PXL = function (_, Kotlin) {
   'use strict';
   var throwCCE = Kotlin.throwCCE;
+  var equals = Kotlin.equals;
   var Unit = Kotlin.kotlin.Unit;
   var EventListener = Kotlin.org.w3c.dom.events.EventListener_gbr1zf$;
   var Kind_CLASS = Kotlin.Kind.CLASS;
@@ -50,7 +51,7 @@ if (typeof kotlin === 'undefined') {
     tmp$_1 = destination.iterator();
     while (tmp$_1.hasNext()) {
       var element_0 = tmp$_1.next();
-      $receiver_0.fillStyle = (element_0 != null ? element_0.equals(this.currentPlayer_0) : null) ? 'blue' : 'gray';
+      $receiver_0.fillStyle = equals(element_0, this.currentPlayer_0) ? 'blue' : 'gray';
       $receiver_0.fillRect(element_0.x, element_0.y, 1.0, 1.0);
       console.log('[game] ' + element_0.id + ' has been successfully added.');
     }
@@ -103,16 +104,20 @@ if (typeof kotlin === 'undefined') {
     if (Kotlin.isType(game.state_8be2vx$, GameState$InProgress)) {
       switch (event.key) {
         case 'ArrowUp':
-          this.y = this.y - 1;
+          if (this.y - 1 >= 0)
+            this.y = this.y - 1;
           break;
         case 'ArrowLeft':
-          this.x = this.x - 1;
+          if (this.x - 1 >= 0)
+            this.x = this.x - 1;
           break;
         case 'ArrowRight':
-          this.x = this.x + 1;
+          if (this.x + 1 < game.canvas.width)
+            this.x = this.x + 1;
           break;
         case 'ArrowDown':
-          this.y = this.y + 1;
+          if (this.y + 1 < game.canvas.height)
+            this.y = this.y + 1;
           break;
       }
     }};
@@ -120,31 +125,6 @@ if (typeof kotlin === 'undefined') {
     kind: Kind_CLASS,
     simpleName: 'Player',
     interfaces: [GameActor]
-  };
-  GameActor$Player.prototype.component1 = function () {
-    return this.id;
-  };
-  GameActor$Player.prototype.component2 = function () {
-    return this.x;
-  };
-  GameActor$Player.prototype.component3 = function () {
-    return this.y;
-  };
-  GameActor$Player.prototype.copy_ai6r6m$ = function (id, x, y) {
-    return new GameActor$Player(id === void 0 ? this.id : id, x === void 0 ? this.x : x, y === void 0 ? this.y : y);
-  };
-  GameActor$Player.prototype.toString = function () {
-    return 'Player(id=' + Kotlin.toString(this.id) + (', x=' + Kotlin.toString(this.x)) + (', y=' + Kotlin.toString(this.y)) + ')';
-  };
-  GameActor$Player.prototype.hashCode = function () {
-    var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.id) | 0;
-    result = result * 31 + Kotlin.hashCode(this.x) | 0;
-    result = result * 31 + Kotlin.hashCode(this.y) | 0;
-    return result;
-  };
-  GameActor$Player.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.id, other.id) && Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y)))));
   };
   function GameActor$Fruit(id) {
     GameActor.call(this, id);
