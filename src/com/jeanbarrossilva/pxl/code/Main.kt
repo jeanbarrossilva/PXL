@@ -4,8 +4,6 @@ import com.jeanbarrossilva.pxl.code.game.Game
 import com.jeanbarrossilva.pxl.code.game.actor.GameActor
 import com.jeanbarrossilva.pxl.code.game.actor.GameActorType.*
 import org.w3c.dom.HTMLCanvasElement
-import org.w3c.dom.events.EventListener
-import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 
 fun main() {
