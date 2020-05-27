@@ -17,8 +17,5 @@ fun main() {
 		)
 	)
 	
-	game.apply {
-		drawIn(document.getElementById("canvas") as HTMLCanvasElement)
-		document.addEventListener("keydown", EventListener { handleKey(it as KeyboardEvent) })
-	}
+	game.drawIn(document.getElementById("canvas") as HTMLCanvasElement)
 }
