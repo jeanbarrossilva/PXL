@@ -279,33 +279,19 @@ if (typeof kotlin === 'undefined') {
   }
   GameActor$Player$Move.prototype.setMobilityIn_dlq7pi$ = function (game, event) {
     if (Kotlin.isType(game.state_8be2vx$, GameState$InProgress)) {
-      switch (event.key) {
-        case 'ArrowUp':
-          if (this.$outer.y - 1 >= 0) {
-            this.$outer.y = this.$outer.y - 1;
-            this.$outer.y;
-          }
-          break;
-        case 'ArrowLeft':
-          if (this.$outer.x - 1 >= 0) {
-            this.$outer.x = this.$outer.x - 1;
-            this.$outer.x;
-          }
-          break;
-        case 'ArrowRight':
-          if (this.$outer.x + 1 < game.canvas.width) {
-            this.$outer.x = this.$outer.x + 1;
-            this.$outer.x;
-          }
-          break;
-        case 'ArrowDown':
-          if (this.$outer.y + 1 < game.canvas.height) {
-            this.$outer.y = this.$outer.y + 1;
-            this.$outer.y;
-          }
-          break;
-      }
-    }};
+      if (equals(event.key, 'ArrowUp') || (equals(event.key, 'w') && this.$outer.y - 1 >= 0)) {
+        this.$outer.y = this.$outer.y - 1;
+        this.$outer.y;
+      }if (equals(event.key, 'ArrowLeft') || (equals(event.key, 'a') && this.$outer.x - 1 >= 0)) {
+        this.$outer.x = this.$outer.x - 1;
+        this.$outer.x;
+      }if (equals(event.key, 'ArrowRight') || (equals(event.key, 'd') && this.$outer.x + 1 < game.canvas.width)) {
+        this.$outer.x = this.$outer.x + 1;
+        this.$outer.x;
+      }if (equals(event.key, 'ArrowDown') || (equals(event.key, 's') && this.$outer.y + 1 < game.canvas.height)) {
+        this.$outer.y = this.$outer.y + 1;
+        this.$outer.y;
+      }}};
   function GameActor$Player$Move$collision$lambda(this$Player) {
     return function (suspects) {
       var tmp$, tmp$_0;
