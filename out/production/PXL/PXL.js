@@ -33,9 +33,10 @@ if (typeof kotlin === 'undefined') {
     this.canvas = canvas;
     this.audio_0 = audio;
     this.state_8be2vx$ = GameState$Waiting_getInstance();
+    this.action_0 = new GameAction(this);
     this.actors_0 = ArrayList_init();
     var $receiver = new GameActor$Player('player1', 8.0, 8.0);
-    window.addEventListener('keydown', EventListener(Game$currentPlayer$lambda$lambda($receiver, this)), true);
+    window.addEventListener('keydown', EventListener(Game$currentPlayer$lambda$lambda(this, $receiver)), true);
     this.currentPlayer_0 = $receiver;
   }
   function Game$addFruits$lambda$generateRandomCoord(this$Game, this$) {
@@ -67,7 +68,7 @@ if (typeof kotlin === 'undefined') {
           }tmp$_1 = this$_0.iterator();
           while (tmp$_1.hasNext()) {
             var element = tmp$_1.next();
-            if (Kotlin.isType(element, GameActor$Fruit) && equals($receiver, name === 120 ? element.x : name === 121 ? element.y : 0)) {
+            if (equals($receiver, name === 120 ? element.x : name === 121 ? element.y : 0)) {
               none$result = false;
               break none$break;
             }}
@@ -146,30 +147,54 @@ if (typeof kotlin === 'undefined') {
     this.actors_0.clear();
     console.log('[game] Game stopped.');
   };
-  function Game$currentPlayer$lambda$lambda(this$, this$Game) {
+  function Game$currentPlayer$lambda$lambda(this$Game, this$) {
     return function (it) {
-      var $receiver = new GameActor$Player$Move(this$);
+      var tmp$, tmp$_0, tmp$_1;
+      tmp$_1 = this$Game.action_0;
+      tmp$_0 = (Kotlin.isType(tmp$ = it, KeyboardEvent) ? tmp$ : throwCCE()).key;
+      tmp$_1.move_7oxxgn$(this$, tmp$_0);
+      var $receiver = this$.collision(this$Game.actors_0);
       var this$Game_0 = this$Game;
-      var tmp$;
-      $receiver.setMobilityIn_dlq7pi$(this$Game_0, Kotlin.isType(tmp$ = it, KeyboardEvent) ? tmp$ : throwCCE());
-      var $receiver_0 = $receiver.collision(this$Game_0.actors_0);
-      if (Kotlin.isType($receiver_0, GameActor$Player$CollisionOccurrence$Registered)) {
-        this$Game_0.actors_0.remove_11rb$($receiver_0.suspect);
-        var tmp$_0;
-        var $receiver_1 = Kotlin.isType(tmp$_0 = document.createElement('source'), HTMLSourceElement) ? tmp$_0 : throwCCE();
-        $receiver_1.src = 'src/coin.mp3';
-        var source = $receiver_1;
-        var $receiver_2 = this$Game_0.audio_0;
-        $receiver_2.preload = 'auto';
-        $receiver_2.currentTime = 0.1;
-        $receiver_2.appendChild(source);
-        $receiver_2.play();
+      if (Kotlin.isType($receiver, GameActor$Player$CollisionOccurrence$Registered)) {
+        this$Game_0.actors_0.remove_11rb$($receiver.suspect);
+        var tmp$_2;
+        var $receiver_0 = Kotlin.isType(tmp$_2 = document.createElement('source'), HTMLSourceElement) ? tmp$_2 : throwCCE();
+        $receiver_0.src = 'src/coin.mp3';
+        var source = $receiver_0;
+        var $receiver_1 = this$Game_0.audio_0;
+        $receiver_1.preload = 'auto';
+        $receiver_1.currentTime = 0.1;
+        $receiver_1.appendChild(source);
+        $receiver_1.play();
       }return Unit;
     };
   }
   Game.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Game',
+    interfaces: []
+  };
+  function GameAction(game) {
+    this.game_0 = game;
+  }
+  GameAction.prototype.move_7oxxgn$ = function (player, key) {
+    if (Kotlin.isType(this.game_0.state_8be2vx$, GameState$InProgress)) {
+      if ((equals(key, 'ArrowUp') || equals(key, 'w')) && player.y - 1 >= 0) {
+        player.y = player.y - 1;
+        player.y;
+      }if ((equals(key, 'ArrowLeft') || equals(key, 'a')) && player.x - 1 >= 0) {
+        player.x = player.x - 1;
+        player.x;
+      }if ((equals(key, 'ArrowRight') || equals(key, 'd')) && player.x + 1 < this.game_0.canvas.width) {
+        player.x = player.x + 1;
+        player.x;
+      }if ((equals(key, 'ArrowDown') || equals(key, 's')) && player.y + 1 < this.game_0.canvas.height) {
+        player.y = player.y + 1;
+        player.y;
+      }}};
+  GameAction.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'GameAction',
     interfaces: []
   };
   function GameActor(id, x, y) {
@@ -203,6 +228,7 @@ if (typeof kotlin === 'undefined') {
     this.id_s28m1k$_0 = id;
     this.x_liz53d$_0 = x;
     this.y_liz548$_0 = y;
+    this.collision = GameActor$Player$collision$lambda(this);
   }
   Object.defineProperty(GameActor$Player.prototype, 'id', {
     get: function () {
@@ -273,26 +299,7 @@ if (typeof kotlin === 'undefined') {
     simpleName: 'CollisionOccurrence',
     interfaces: []
   };
-  function GameActor$Player$Move($outer) {
-    this.$outer = $outer;
-    this.collision = GameActor$Player$Move$collision$lambda(this.$outer);
-  }
-  GameActor$Player$Move.prototype.setMobilityIn_dlq7pi$ = function (game, event) {
-    if (Kotlin.isType(game.state_8be2vx$, GameState$InProgress)) {
-      if (equals(event.key, 'ArrowUp') || (equals(event.key, 'w') && this.$outer.y - 1 >= 0)) {
-        this.$outer.y = this.$outer.y - 1;
-        this.$outer.y;
-      }if (equals(event.key, 'ArrowLeft') || (equals(event.key, 'a') && this.$outer.x - 1 >= 0)) {
-        this.$outer.x = this.$outer.x - 1;
-        this.$outer.x;
-      }if (equals(event.key, 'ArrowRight') || (equals(event.key, 'd') && this.$outer.x + 1 < game.canvas.width)) {
-        this.$outer.x = this.$outer.x + 1;
-        this.$outer.x;
-      }if (equals(event.key, 'ArrowDown') || (equals(event.key, 's') && this.$outer.y + 1 < game.canvas.height)) {
-        this.$outer.y = this.$outer.y + 1;
-        this.$outer.y;
-      }}};
-  function GameActor$Player$Move$collision$lambda(this$Player) {
+  function GameActor$Player$collision$lambda(this$Player) {
     return function (suspects) {
       var tmp$, tmp$_0;
       var firstOrNull$result;
@@ -312,11 +319,6 @@ if (typeof kotlin === 'undefined') {
       return (tmp$_0 = (tmp$ = firstOrNull$result) != null ? new GameActor$Player$CollisionOccurrence$Registered(tmp$) : null) != null ? tmp$_0 : GameActor$Player$CollisionOccurrence$NonExistent_getInstance();
     };
   }
-  GameActor$Player$Move.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'Move',
-    interfaces: []
-  };
   GameActor$Player.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Player',
@@ -444,12 +446,12 @@ if (typeof kotlin === 'undefined') {
   var package$code = _.code || (_.code = {});
   var package$game = package$code.game || (package$code.game = {});
   package$game.Game = Game;
+  package$game.GameAction = GameAction;
   GameActor$Player$CollisionOccurrence.Registered = GameActor$Player$CollisionOccurrence$Registered;
   Object.defineProperty(GameActor$Player$CollisionOccurrence, 'NonExistent', {
     get: GameActor$Player$CollisionOccurrence$NonExistent_getInstance
   });
   GameActor$Player.CollisionOccurrence = GameActor$Player$CollisionOccurrence;
-  GameActor$Player.Move = GameActor$Player$Move;
   GameActor.Player = GameActor$Player;
   GameActor.Fruit = GameActor$Fruit;
   package$game.GameActor = GameActor;

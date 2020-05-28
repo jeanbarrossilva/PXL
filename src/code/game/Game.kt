@@ -12,32 +12,31 @@ import kotlin.random.Random
 
 class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
 	internal var state: GameState = Waiting
+	private val action = GameAction(game = this)
 	
 	private val actors = mutableListOf<GameActor>()
 	
-	private val currentPlayer = Player("player1", x = 8.0, y = 8.0).apply {
+	private val currentPlayer = Player("player1", x = 8.0, y = 8.0).apply player@{
 		window.addEventListener(
 			"keydown",
 			EventListener {
-				Move().apply {
-					setMobilityIn(this@Game, event = it as KeyboardEvent)
-					
-					collision(actors).let { collision ->
-						if (collision is Registered) {
-							actors.remove(collision.suspect)
+				action.move(this@player, (it as KeyboardEvent).key)
+				
+				this@player.collision(actors).let { collision ->
+					if (collision is Registered) {
+						actors.remove(collision.suspect)
+						
+						run sound@{
+							val source = (document.createElement("source") as HTMLSourceElement).apply {
+								src = "src/coin.mp3"
+							}
 							
-							run sound@{
-								val source = (document.createElement("source") as HTMLSourceElement).apply {
-									src = "src/coin.mp3"
-								}
+							audio.apply {
+								preload = "auto"
+								currentTime = 0.1
 								
-								audio.apply {
-									preload = "auto"
-									currentTime = 0.1
-									
-									appendChild(source)
-									play()
-								}
+								appendChild(source)
+								play()
 							}
 						}
 					}
@@ -58,7 +57,7 @@ class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
 				
 				return try {
 					Random.nextInt(comparable).toDouble().let { generated ->
-						if (none { it is Fruit && generated == (if (name == 'x') it.x else if (name == 'y') it.y else 0) })
+						if (none { generated == (if (name == 'x') it.x else if (name == 'y') it.y else 0) })
 							generated
 						else {
 							generateRandomCoord(name)
