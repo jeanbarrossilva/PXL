@@ -1,6 +1,7 @@
 package code.game
 
 import code.game.GameActor.*
+import code.game.GameActor.Player.CollisionOccurrence.*
 import org.w3c.dom.HTMLSourceElement
 import kotlin.browser.document
 
@@ -17,7 +18,7 @@ class GameAction(private val game: Game) {
     fun removeSuspectOnCollisionWith(player: Player) =
         player.collision(game.actors).let { collision ->
             with(game) {
-                if (collision is Player.CollisionOccurrence.Registered) {
+                if (collision is Registered) {
                     run sound@{
                         val source = (document.createElement("source") as HTMLSourceElement).apply {
                             src = "src/coin.mp3"
