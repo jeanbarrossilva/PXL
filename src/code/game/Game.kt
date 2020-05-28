@@ -64,8 +64,8 @@ class Game(val canvas: HTMLCanvasElement) {
 				
 				actors.forEach { actor ->
 					fillStyle = when (actor) {
-						is Player -> if (actor == currentPlayer) "yellow" else "gray"
-						is Fruit -> "green"
+						is Player -> if (actor == currentPlayer) "blue" else "gray"
+						is Fruit -> "red"
 					}
 					
 					fillRect(actor.x, actor.y, 1.0, 1.0)

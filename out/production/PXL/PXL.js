@@ -107,9 +107,9 @@ if (typeof kotlin === 'undefined') {
       var element = tmp$_0.next();
       var tmp$_1;
       if (Kotlin.isType(element, GameActor$Player))
-        tmp$_1 = equals(element, this.currentPlayer_0) ? 'yellow' : 'gray';
+        tmp$_1 = equals(element, this.currentPlayer_0) ? 'blue' : 'gray';
       else if (Kotlin.isType(element, GameActor$Fruit))
-        tmp$_1 = 'green';
+        tmp$_1 = 'red';
       else
         tmp$_1 = Kotlin.noWhenBranchMatched();
       $receiver_0.fillStyle = tmp$_1;
