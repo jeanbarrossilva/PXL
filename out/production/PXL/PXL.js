@@ -4,6 +4,7 @@ if (typeof kotlin === 'undefined') {
   'use strict';
   var Random = Kotlin.kotlin.random.Random;
   var equals = Kotlin.equals;
+  var Throwable = Error;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var get_lastIndex = Kotlin.kotlin.collections.get_lastIndex_55thoc$;
   var toString = Kotlin.toString;
@@ -39,7 +40,7 @@ if (typeof kotlin === 'undefined') {
   }
   function Game$addFruits$lambda$generateRandomCoord(this$Game, this$) {
     return function closure$generateRandomCoord(name) {
-      var tmp$;
+      var tmp$, tmp$_0;
       switch (name) {
         case 120:
           tmp$ = this$Game.canvas.width;
@@ -51,27 +52,42 @@ if (typeof kotlin === 'undefined') {
           break;
       }
       var comparable = tmp$;
-      var $receiver = Random.Default.nextInt_za3lpa$(comparable);
-      closure$generateRandomCoord;
-      var this$_0 = this$;
-      var closure$generateRandomCoord_0 = closure$generateRandomCoord;
-      var none$result;
-      none$break: do {
-        var tmp$_0;
-        if (Kotlin.isType(this$_0, Collection) && this$_0.isEmpty()) {
-          none$result = true;
-          break none$break;
-        }tmp$_0 = this$_0.iterator();
-        while (tmp$_0.hasNext()) {
-          var element = tmp$_0.next();
-          if (Kotlin.isType(element, GameActor$Fruit) && equals($receiver, name === 120 ? element.x : name === 121 ? element.y : 0)) {
-            none$result = false;
+      try {
+        var $receiver = Random.Default.nextInt_za3lpa$(comparable);
+        closure$generateRandomCoord;
+        var this$_0 = this$;
+        var closure$generateRandomCoord_0 = closure$generateRandomCoord;
+        var block$result;
+        var none$result;
+        none$break: do {
+          var tmp$_1;
+          if (Kotlin.isType(this$_0, Collection) && this$_0.isEmpty()) {
+            none$result = true;
             break none$break;
-          }}
-        none$result = true;
+          }tmp$_1 = this$_0.iterator();
+          while (tmp$_1.hasNext()) {
+            var element = tmp$_1.next();
+            if (Kotlin.isType(element, GameActor$Fruit) && equals($receiver, name === 120 ? element.x : name === 121 ? element.y : 0)) {
+              none$result = false;
+              break none$break;
+            }}
+          none$result = true;
+        }
+         while (false);
+        if (none$result) {
+          block$result = $receiver;
+        } else {
+          block$result = closure$generateRandomCoord_0(name);
+        }
+        tmp$_0 = block$result;
+      } catch (e) {
+        if (Kotlin.isType(e, Throwable)) {
+          console.log('[game] Fruit generation is canceled until one of the existent ones is collected.');
+          tmp$_0 = null;
+        } else
+          throw e;
       }
-       while (false);
-      return none$result ? $receiver : closure$generateRandomCoord_0(name);
+      return tmp$_0;
     };
   }
   function Game$addFruits$lambda$lambda(closure$generateRandomCoord, this$) {
@@ -88,7 +104,7 @@ if (typeof kotlin === 'undefined') {
   Game.prototype.addFruits_0 = function () {
     var $receiver = this.actors_0;
     var generateRandomCoord = Game$addFruits$lambda$generateRandomCoord(this, $receiver);
-    window.setInterval(Game$addFruits$lambda$lambda(generateRandomCoord, $receiver), 2000);
+    window.setInterval(Game$addFruits$lambda$lambda(generateRandomCoord, $receiver), 5000);
     return $receiver;
   };
   function Game$drawActors$lambda$lambda(this$Game) {

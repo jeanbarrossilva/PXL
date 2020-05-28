@@ -55,16 +55,22 @@ class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
 					else -> 0
 				}
 				
-				return Random.nextInt(comparable).toDouble().let { generated ->
-					if (none { it is Fruit && generated == (if (name == 'x') it.x else if (name == 'y') it.y else 0) })
-						generated
-					else
-						generateRandomCoord(name)
+				return try {
+					Random.nextInt(comparable).toDouble().let { generated ->
+						if (none { it is Fruit && generated == (if (name == 'x') it.x else if (name == 'y') it.y else 0) })
+							generated
+						else {
+							generateRandomCoord(name)
+						}
+					}
+				} catch (e: Throwable) {
+					console.log("[game] Fruit generation is canceled until one of the existent ones is collected.")
+					null
 				}
 			}
 			
 			window.setInterval(
-				handler = {
+				handler = generate@{
 					val (generatedX, generatedY) = generateRandomCoord('x') to generateRandomCoord('y')
 					
 					if (generatedX != null && generatedY != null) {
@@ -72,7 +78,7 @@ class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
 						add(fruit)
 					}
 				},
-				timeout = 2000
+				timeout = 5000
 			)
 		}
 	
