@@ -3,11 +3,9 @@ if (typeof kotlin === 'undefined') {
 }var PXL = function (_, Kotlin) {
   'use strict';
   var Random = Kotlin.kotlin.random.Random;
-  var unboxChar = Kotlin.unboxChar;
   var equals = Kotlin.equals;
   var get_lastIndex = Kotlin.kotlin.collections.get_lastIndex_55thoc$;
   var toString = Kotlin.toString;
-  var toBoxedChar = Kotlin.toBoxedChar;
   var Unit = Kotlin.kotlin.Unit;
   var throwCCE = Kotlin.throwCCE;
   var EventListener = Kotlin.org.w3c.dom.events.EventListener_gbr1zf$;
@@ -33,51 +31,53 @@ if (typeof kotlin === 'undefined') {
     this.currentPlayer_0 = $receiver;
     this.actors_0 = ArrayList_init();
   }
-  function Game$addFruits$lambda$lambda(this$Game, this$) {
-    return function (name) {
-      var tmp$, tmp$_0;
-      tmp$_0 = Random.Default;
-      switch (unboxChar(name)) {
+  function Game$addFruits$lambda$generateRandomCoord(this$Game, this$) {
+    return function closure$generateRandomCoord(name) {
+      var tmp$;
+      switch (name) {
         case 120:
           tmp$ = this$Game.canvas.width;
           break;
         case 121:
           tmp$ = this$Game.canvas.height;
           break;
-        default:tmp$ = 0.0;
+        default:tmp$ = 0;
           break;
       }
-      var $receiver = tmp$_0.nextDouble_14dthe$(tmp$);
-      var $receiver_0 = this$;
+      var comparable = tmp$;
+      var $receiver = Random.Default.nextInt_za3lpa$(comparable);
+      closure$generateRandomCoord;
+      var this$_0 = this$;
+      var closure$generateRandomCoord_0 = closure$generateRandomCoord;
       var none$result;
       none$break: do {
-        var tmp$_1;
-        if (Kotlin.isType($receiver_0, Collection) && $receiver_0.isEmpty()) {
+        var tmp$_0;
+        if (Kotlin.isType(this$_0, Collection) && this$_0.isEmpty()) {
           none$result = true;
           break none$break;
-        }tmp$_1 = $receiver_0.iterator();
-        while (tmp$_1.hasNext()) {
-          var element = tmp$_1.next();
-          if (Kotlin.isType(element, GameActor$Fruit) && equals($receiver, unboxChar(name) === 120 ? element.x : unboxChar(name) === 121 ? element.y : 0)) {
+        }tmp$_0 = this$_0.iterator();
+        while (tmp$_0.hasNext()) {
+          var element = tmp$_0.next();
+          if (Kotlin.isType(element, GameActor$Fruit) && equals($receiver, name === 120 ? element.x : name === 121 ? element.y : 0)) {
             none$result = false;
             break none$break;
           }}
         none$result = true;
       }
        while (false);
-      return none$result ? $receiver : 0.0;
+      return none$result ? $receiver : closure$generateRandomCoord_0(name);
     };
   }
-  function Game$addFruits$lambda$lambda_0(this$, closure$randomCoordinate) {
+  function Game$addFruits$lambda$lambda(this$, closure$generateRandomCoord) {
     return function () {
-      var fruit = new GameActor$Fruit('fruit' + toString(get_lastIndex(this$)) + toString(1), closure$randomCoordinate(toBoxedChar(120)), closure$randomCoordinate(toBoxedChar(121)));
+      var fruit = new GameActor$Fruit('fruit' + toString(get_lastIndex(this$)) + toString(1), closure$generateRandomCoord(120), closure$generateRandomCoord(121));
       return this$.add_11rb$(fruit);
     };
   }
   Game.prototype.addFruits_0 = function () {
     var $receiver = this.actors_0;
-    var randomCoordinate = Game$addFruits$lambda$lambda(this, $receiver);
-    window.setInterval(Game$addFruits$lambda$lambda_0($receiver, randomCoordinate), 5000);
+    var generateRandomCoord = Game$addFruits$lambda$generateRandomCoord(this, $receiver);
+    window.setInterval(Game$addFruits$lambda$lambda($receiver, generateRandomCoord), 5000);
     return $receiver;
   };
   function Game$drawActors$lambda$lambda(this$Game) {

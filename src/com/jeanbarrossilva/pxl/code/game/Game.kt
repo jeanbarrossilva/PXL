@@ -20,24 +20,24 @@ class Game(val canvas: HTMLCanvasElement) {
 	
 	private fun addFruits() =
 		actors.apply {
-			val randomCoordinate: (Char) -> Double = { name: Char ->
-				Random.nextDouble(
-					when (name) {
-						'x' -> canvas.width.toDouble()
-						'y' -> canvas.height.toDouble()
-						else -> 0.0
-					}
-				).let { generated ->
+			fun generateRandomCoord(name: Char): Double {
+				val comparable = when (name) {
+					'x' -> canvas.width
+					'y' -> canvas.height
+					else -> 0
+				}
+				
+				return Random.nextInt(comparable).toDouble().let { generated ->
 					if (none { it is Fruit && generated == (if (name == 'x') it.x else if (name == 'y') it.y else 0) })
 						generated
 					else
-						0.0
+						generateRandomCoord(name)
 				}
 			}
 			
 			window.setInterval(
 				handler = {
-					val fruit = Fruit(id = "fruit" + lastIndex + 1, x = randomCoordinate('x'), y = randomCoordinate('y'))
+					val fruit = Fruit(id = "fruit" + lastIndex + 1, x = generateRandomCoord('x'), y = generateRandomCoord('y'))
 					add(fruit)
 				},
 				timeout = 5000
