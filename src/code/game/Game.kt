@@ -32,6 +32,7 @@ class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
 								}
 								
 								audio.apply {
+									preload = "auto"
 									currentTime = 0.1
 									
 									appendChild(source)

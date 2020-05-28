@@ -160,6 +160,7 @@ if (typeof kotlin === 'undefined') {
         $receiver_1.src = '../src/coin.mp3';
         var source = $receiver_1;
         var $receiver_2 = this$Game_0.audio_0;
+        $receiver_2.preload = 'auto';
         $receiver_2.currentTime = 0.1;
         $receiver_2.appendChild(source);
         $receiver_2.play();
