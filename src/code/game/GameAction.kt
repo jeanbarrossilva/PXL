@@ -1,6 +1,8 @@
 package code.game
 
 import code.game.GameActor.*
+import org.w3c.dom.HTMLSourceElement
+import kotlin.browser.document
 
 class GameAction(private val game: Game) {
     fun move(player: Player, key: String) {
@@ -11,4 +13,28 @@ class GameAction(private val game: Game) {
             if ((key == "ArrowDown"  || key == "s") && player.y + 1 < game.canvas.height) ++player.y
         }
     }
+    
+    fun removeSuspectOnCollisionWith(player: Player) =
+        player.collision(game.actors).let { collision ->
+            with(game) {
+                if (collision is Player.CollisionOccurrence.Registered) {
+                    run sound@{
+                        val source = (document.createElement("source") as HTMLSourceElement).apply {
+                            src = "src/coin.mp3"
+                        }
+            
+                        game.audio.apply {
+                            preload = "auto"
+                            currentTime = 0.1
+                
+                            appendChild(source)
+                            play()
+                        }
+                    }
+        
+                    actors.remove(collision.suspect)
+                } else
+                    actors
+            }
+        }
 }

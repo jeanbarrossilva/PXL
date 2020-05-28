@@ -1,46 +1,25 @@
 package code.game
 
 import code.game.GameActor.*
-import code.game.GameActor.Player.CollisionOccurrence.*
 import code.game.GameState.*
 import org.w3c.dom.*
 import org.w3c.dom.events.EventListener
 import org.w3c.dom.events.KeyboardEvent
-import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.random.Random
 
-class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
+class Game(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
     internal var state: GameState = Waiting
     private val action = GameAction(game = this)
     
-    private val actors = mutableListOf<GameActor>()
+    internal var actors = mutableListOf<GameActor>()
     
     private val currentPlayer = Player("player1", x = 8.0, y = 8.0).apply player@{
         window.addEventListener(
             "keydown",
-            EventListener {
-                action.move(this@player, (it as KeyboardEvent).key)
-                
-                this@player.collision(actors).let { collision ->
-                    if (collision is Registered) {
-                        actors.remove(collision.suspect)
-                        
-                        run sound@{
-                            val source = (document.createElement("source") as HTMLSourceElement).apply {
-                                src = "src/coin.mp3"
-                            }
-                            
-                            audio.apply {
-                                preload = "auto"
-                                currentTime = 0.1
-                                
-                                appendChild(source)
-                                play()
-                            }
-                        }
-                    }
-                }
+            EventListener { event ->
+                action.move(this@player, (event as KeyboardEvent).key)
+                action.removeSuspectOnCollisionWith(this@player)
             },
             true
         )

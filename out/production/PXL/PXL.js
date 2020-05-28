@@ -31,10 +31,10 @@ if (typeof kotlin === 'undefined') {
   GameState$Finished.prototype.constructor = GameState$Finished;
   function Game(canvas, audio) {
     this.canvas = canvas;
-    this.audio_0 = audio;
+    this.audio = audio;
     this.state_8be2vx$ = GameState$Waiting_getInstance();
     this.action_0 = new GameAction(this);
-    this.actors_0 = ArrayList_init();
+    this.actors_8be2vx$ = ArrayList_init();
     var $receiver = new GameActor$Player('player1', 8.0, 8.0);
     window.addEventListener('keydown', EventListener(Game$currentPlayer$lambda$lambda(this, $receiver)), true);
     this.currentPlayer_0 = $receiver;
@@ -103,7 +103,7 @@ if (typeof kotlin === 'undefined') {
     };
   }
   Game.prototype.addFruits_0 = function () {
-    var $receiver = this.actors_0;
+    var $receiver = this.actors_8be2vx$;
     var generateRandomCoord = Game$addFruits$lambda$generateRandomCoord(this, $receiver);
     window.setInterval(Game$addFruits$lambda$lambda(generateRandomCoord, $receiver), 5000);
     return $receiver;
@@ -120,7 +120,7 @@ if (typeof kotlin === 'undefined') {
     var $receiver_0 = Kotlin.isType(tmp$ = $receiver.getContext('2d'), CanvasRenderingContext2D) ? tmp$ : throwCCE();
     $receiver_0.clearRect(0.0, 0.0, $receiver.width, $receiver.height);
     var tmp$_0;
-    tmp$_0 = this.actors_0.iterator();
+    tmp$_0 = this.actors_8be2vx$.iterator();
     while (tmp$_0.hasNext()) {
       var element = tmp$_0.next();
       var tmp$_1;
@@ -137,36 +137,24 @@ if (typeof kotlin === 'undefined') {
   };
   Game.prototype.start = function () {
     this.state_8be2vx$ = GameState$InProgress_getInstance();
-    this.actors_0.add_11rb$(this.currentPlayer_0);
+    this.actors_8be2vx$.add_11rb$(this.currentPlayer_0);
     this.addFruits_0();
     this.drawActors_0();
     console.log('[game] Game started.');
   };
   Game.prototype.stop = function () {
     this.state_8be2vx$ = GameState$Finished_getInstance();
-    this.actors_0.clear();
+    this.actors_8be2vx$.clear();
     console.log('[game] Game stopped.');
   };
   function Game$currentPlayer$lambda$lambda(this$Game, this$) {
-    return function (it) {
+    return function (event) {
       var tmp$, tmp$_0, tmp$_1;
       tmp$_1 = this$Game.action_0;
-      tmp$_0 = (Kotlin.isType(tmp$ = it, KeyboardEvent) ? tmp$ : throwCCE()).key;
+      tmp$_0 = (Kotlin.isType(tmp$ = event, KeyboardEvent) ? tmp$ : throwCCE()).key;
       tmp$_1.move_7oxxgn$(this$, tmp$_0);
-      var $receiver = this$.collision(this$Game.actors_0);
-      var this$Game_0 = this$Game;
-      if (Kotlin.isType($receiver, GameActor$Player$CollisionOccurrence$Registered)) {
-        this$Game_0.actors_0.remove_11rb$($receiver.suspect);
-        var tmp$_2;
-        var $receiver_0 = Kotlin.isType(tmp$_2 = document.createElement('source'), HTMLSourceElement) ? tmp$_2 : throwCCE();
-        $receiver_0.src = 'src/coin.mp3';
-        var source = $receiver_0;
-        var $receiver_1 = this$Game_0.audio_0;
-        $receiver_1.preload = 'auto';
-        $receiver_1.currentTime = 0.1;
-        $receiver_1.appendChild(source);
-        $receiver_1.play();
-      }return Unit;
+      this$Game.action_0.removeSuspectOnCollisionWith_5lkeiv$(this$);
+      return Unit;
     };
   }
   Game.$metadata$ = {
@@ -192,6 +180,26 @@ if (typeof kotlin === 'undefined') {
         player.y = player.y + 1;
         player.y;
       }}};
+  GameAction.prototype.removeSuspectOnCollisionWith_5lkeiv$ = function (player) {
+    var collision = player.collision(this.game_0.actors_8be2vx$);
+    var receiver = this.game_0;
+    var block$result;
+    if (Kotlin.isType(collision, GameActor$Player$CollisionOccurrence$Registered)) {
+      var tmp$;
+      var $receiver = Kotlin.isType(tmp$ = document.createElement('source'), HTMLSourceElement) ? tmp$ : throwCCE();
+      $receiver.src = 'src/coin.mp3';
+      var source = $receiver;
+      var $receiver_0 = this.game_0.audio;
+      $receiver_0.preload = 'auto';
+      $receiver_0.currentTime = 0.1;
+      $receiver_0.appendChild(source);
+      $receiver_0.play();
+      block$result = receiver.actors_8be2vx$.remove_11rb$(collision.suspect);
+    } else {
+      block$result = receiver.actors_8be2vx$;
+    }
+    return block$result;
+  };
   GameAction.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'GameAction',
