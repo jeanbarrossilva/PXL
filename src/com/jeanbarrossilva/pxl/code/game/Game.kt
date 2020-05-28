@@ -1,6 +1,7 @@
 package com.jeanbarrossilva.pxl.code.game
 
 import com.jeanbarrossilva.pxl.code.game.GameActor.*
+import com.jeanbarrossilva.pxl.code.game.GameActor.Player.CollisionOccurrence.*
 import com.jeanbarrossilva.pxl.code.game.GameState.*
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
@@ -12,15 +13,24 @@ import kotlin.random.Random
 class Game(val canvas: HTMLCanvasElement) {
 	internal var state: GameState = Waiting
 	
-	private val currentPlayer = Player("player1", x = 8.0, y = 8.0).apply {
-		window.addEventListener("keydown", EventListener { isMovableIn(this@Game, event = it as KeyboardEvent) }, true)
-	}
-	
 	private val actors = mutableListOf<GameActor>()
+	
+	private val currentPlayer = Player("player1", x = 8.0, y = 8.0).apply {
+		window.addEventListener(
+			"keydown",
+			EventListener {
+				Move().apply {
+					setMobilityIn(this@Game, event = it as KeyboardEvent)
+					collision(actors).let { collision -> if (collision is Registered) actors.remove(collision.suspect) }
+				}
+			},
+			true
+		)
+	}
 	
 	private fun addFruits() =
 		actors.apply {
-			fun generateRandomCoord(name: Char): Double {
+			fun generateRandomCoord(name: Char): Double? {
 				val comparable = when (name) {
 					'x' -> canvas.width
 					'y' -> canvas.height
@@ -37,8 +47,12 @@ class Game(val canvas: HTMLCanvasElement) {
 			
 			window.setInterval(
 				handler = {
-					val fruit = Fruit(id = "fruit" + lastIndex + 1, x = generateRandomCoord('x'), y = generateRandomCoord('y'))
-					add(fruit)
+					val (generatedX, generatedY) = generateRandomCoord('x') to generateRandomCoord('y')
+					
+					if (generatedX != null && generatedY != null) {
+						val fruit = Fruit(id = "fruit" + (lastIndex + 1), x = generatedX, y = generatedY)
+						add(fruit)
+					}
 				},
 				timeout = 5000
 			)
