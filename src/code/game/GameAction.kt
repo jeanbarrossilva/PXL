@@ -15,7 +15,7 @@ class GameAction(private val game: Game) {
         }
     }
     
-    fun removeSuspectOnCollisionWith(player: Player) =
+    fun removeSuspectWhenCollidedWith(player: Player) =
         player.collision(game.actors).let { collision ->
             with(game) {
                 if (collision is Registered) {

@@ -153,7 +153,7 @@ if (typeof kotlin === 'undefined') {
       tmp$_1 = this$Game.action_0;
       tmp$_0 = (Kotlin.isType(tmp$ = event, KeyboardEvent) ? tmp$ : throwCCE()).key;
       tmp$_1.move_7oxxgn$(this$, tmp$_0);
-      this$Game.action_0.removeSuspectOnCollisionWith_5lkeiv$(this$);
+      this$Game.action_0.removeSuspectWhenCollidedWith_5lkeiv$(this$);
       return Unit;
     };
   }
@@ -180,7 +180,7 @@ if (typeof kotlin === 'undefined') {
         player.y = player.y + 1;
         player.y;
       }}};
-  GameAction.prototype.removeSuspectOnCollisionWith_5lkeiv$ = function (player) {
+  GameAction.prototype.removeSuspectWhenCollidedWith_5lkeiv$ = function (player) {
     var collision = player.collision(this.game_0.actors_8be2vx$);
     var receiver = this.game_0;
     var block$result;

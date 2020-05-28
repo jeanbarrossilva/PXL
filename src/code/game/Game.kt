@@ -19,7 +19,7 @@ class Game(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
             "keydown",
             EventListener { event ->
                 action.move(this@player, (event as KeyboardEvent).key)
-                action.removeSuspectOnCollisionWith(this@player)
+                action.removeSuspectWhenCollidedWith(this@player)
             },
             true
         )
