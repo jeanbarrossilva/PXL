@@ -28,7 +28,7 @@ class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
 							
 							run sound@{
 								val source = (document.createElement("source") as HTMLSourceElement).apply {
-									src = "../src/coin.mp3"
+									src = "src/coin.mp3"
 								}
 								
 								audio.apply {

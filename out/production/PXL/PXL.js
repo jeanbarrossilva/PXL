@@ -157,7 +157,7 @@ if (typeof kotlin === 'undefined') {
         this$Game_0.actors_0.remove_11rb$($receiver_0.suspect);
         var tmp$_0;
         var $receiver_1 = Kotlin.isType(tmp$_0 = document.createElement('source'), HTMLSourceElement) ? tmp$_0 : throwCCE();
-        $receiver_1.src = '../src/coin.mp3';
+        $receiver_1.src = 'src/coin.mp3';
         var source = $receiver_1;
         var $receiver_2 = this$Game_0.audio_0;
         $receiver_2.preload = 'auto';
