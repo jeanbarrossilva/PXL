@@ -1,10 +1,9 @@
-package com.jeanbarrossilva.pxl.code.game
+package code.game
 
-import com.jeanbarrossilva.pxl.code.game.GameActor.*
-import com.jeanbarrossilva.pxl.code.game.GameActor.Player.CollisionOccurrence.*
-import com.jeanbarrossilva.pxl.code.game.GameState.*
-import org.w3c.dom.CanvasRenderingContext2D
-import org.w3c.dom.HTMLCanvasElement
+import code.game.GameActor.*
+import code.game.GameActor.Player.CollisionOccurrence.*
+import code.game.GameState.*
+import org.w3c.dom.*
 import org.w3c.dom.events.EventListener
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
@@ -54,7 +53,7 @@ class Game(val canvas: HTMLCanvasElement) {
 						add(fruit)
 					}
 				},
-				timeout = 5000
+				timeout = 2000
 			)
 		}
 	

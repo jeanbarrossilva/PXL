@@ -1,6 +1,6 @@
-package com.jeanbarrossilva.pxl.code.game
+package code.game
 
-import com.jeanbarrossilva.pxl.code.game.GameState.*
+import code.game.GameState.*
 import org.w3c.dom.events.KeyboardEvent
 
 sealed class GameActor(open val id: String, open var x: Double, open var y: Double) {

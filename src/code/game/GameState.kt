@@ -1,4 +1,4 @@
-package com.jeanbarrossilva.pxl.code.game
+package code.game
 
 sealed class GameState {
 	object Waiting : GameState()

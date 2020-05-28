@@ -87,7 +87,7 @@ if (typeof kotlin === 'undefined') {
   Game.prototype.addFruits_0 = function () {
     var $receiver = this.actors_0;
     var generateRandomCoord = Game$addFruits$lambda$generateRandomCoord(this, $receiver);
-    window.setInterval(Game$addFruits$lambda$lambda(generateRandomCoord, $receiver), 5000);
+    window.setInterval(Game$addFruits$lambda$lambda(generateRandomCoord, $receiver), 2000);
     return $receiver;
   };
   function Game$drawActors$lambda$lambda(this$Game) {
@@ -134,7 +134,7 @@ if (typeof kotlin === 'undefined') {
       var $receiver = new GameActor$Player$Move(this$);
       var this$Game_0 = this$Game;
       var tmp$;
-      $receiver.setMobilityIn_89lca3$(this$Game_0, Kotlin.isType(tmp$ = it, KeyboardEvent) ? tmp$ : throwCCE());
+      $receiver.setMobilityIn_dlq7pi$(this$Game_0, Kotlin.isType(tmp$ = it, KeyboardEvent) ? tmp$ : throwCCE());
       var $receiver_0 = $receiver.collision(this$Game_0.actors_0);
       if (Kotlin.isType($receiver_0, GameActor$Player$CollisionOccurrence$Registered))
         this$Game_0.actors_0.remove_11rb$($receiver_0.suspect);
@@ -147,56 +147,56 @@ if (typeof kotlin === 'undefined') {
     interfaces: []
   };
   function GameActor(id, x, y) {
-    this.id_ym8tau$_0 = id;
-    this.x_zhihu1$_0 = x;
-    this.y_zhiht6$_0 = y;
+    this.id_t016m1$_0 = id;
+    this.x_j9ku2w$_0 = x;
+    this.y_j9ku3r$_0 = y;
   }
   Object.defineProperty(GameActor.prototype, 'id', {
     get: function () {
-      return this.id_ym8tau$_0;
+      return this.id_t016m1$_0;
     }
   });
   Object.defineProperty(GameActor.prototype, 'x', {
     get: function () {
-      return this.x_zhihu1$_0;
+      return this.x_j9ku2w$_0;
     },
     set: function (x) {
-      this.x_zhihu1$_0 = x;
+      this.x_j9ku2w$_0 = x;
     }
   });
   Object.defineProperty(GameActor.prototype, 'y', {
     get: function () {
-      return this.y_zhiht6$_0;
+      return this.y_j9ku3r$_0;
     },
     set: function (y) {
-      this.y_zhiht6$_0 = y;
+      this.y_j9ku3r$_0 = y;
     }
   });
   function GameActor$Player(id, x, y) {
     GameActor.call(this, id, x, y);
-    this.id_nrpo55$_0 = id;
-    this.x_f9t4my$_0 = x;
-    this.y_f9t4nt$_0 = y;
+    this.id_s28m1k$_0 = id;
+    this.x_liz53d$_0 = x;
+    this.y_liz548$_0 = y;
   }
   Object.defineProperty(GameActor$Player.prototype, 'id', {
     get: function () {
-      return this.id_nrpo55$_0;
+      return this.id_s28m1k$_0;
     }
   });
   Object.defineProperty(GameActor$Player.prototype, 'x', {
     get: function () {
-      return this.x_f9t4my$_0;
+      return this.x_liz53d$_0;
     },
     set: function (x) {
-      this.x_f9t4my$_0 = x;
+      this.x_liz53d$_0 = x;
     }
   });
   Object.defineProperty(GameActor$Player.prototype, 'y', {
     get: function () {
-      return this.y_f9t4nt$_0;
+      return this.y_liz548$_0;
     },
     set: function (y) {
-      this.y_f9t4nt$_0 = y;
+      this.y_liz548$_0 = y;
     }
   });
   function GameActor$Player$CollisionOccurrence() {
@@ -213,7 +213,7 @@ if (typeof kotlin === 'undefined') {
   GameActor$Player$CollisionOccurrence$Registered.prototype.component1 = function () {
     return this.suspect;
   };
-  GameActor$Player$CollisionOccurrence$Registered.prototype.copy_wqqaah$ = function (suspect) {
+  GameActor$Player$CollisionOccurrence$Registered.prototype.copy_jdryg8$ = function (suspect) {
     return new GameActor$Player$CollisionOccurrence$Registered(suspect === void 0 ? this.suspect : suspect);
   };
   GameActor$Player$CollisionOccurrence$Registered.prototype.toString = function () {
@@ -251,7 +251,7 @@ if (typeof kotlin === 'undefined') {
     this.$outer = $outer;
     this.collision = GameActor$Player$Move$collision$lambda(this.$outer);
   }
-  GameActor$Player$Move.prototype.setMobilityIn_89lca3$ = function (game, event) {
+  GameActor$Player$Move.prototype.setMobilityIn_dlq7pi$ = function (game, event) {
     if (Kotlin.isType(game.state_8be2vx$, GameState$InProgress)) {
       switch (event.key) {
         case 'ArrowUp':
@@ -312,29 +312,29 @@ if (typeof kotlin === 'undefined') {
   };
   function GameActor$Fruit(id, x, y) {
     GameActor.call(this, id, x, y);
-    this.id_819zm8$_0 = id;
-    this.x_vthrxt$_0 = x;
-    this.y_vthryo$_0 = y;
+    this.id_1s3z5t$_0 = id;
+    this.x_4iwnpe$_0 = x;
+    this.y_4iwnq9$_0 = y;
   }
   Object.defineProperty(GameActor$Fruit.prototype, 'id', {
     get: function () {
-      return this.id_819zm8$_0;
+      return this.id_1s3z5t$_0;
     }
   });
   Object.defineProperty(GameActor$Fruit.prototype, 'x', {
     get: function () {
-      return this.x_vthrxt$_0;
+      return this.x_4iwnpe$_0;
     },
     set: function (x) {
-      this.x_vthrxt$_0 = x;
+      this.x_4iwnpe$_0 = x;
     }
   });
   Object.defineProperty(GameActor$Fruit.prototype, 'y', {
     get: function () {
-      return this.y_vthryo$_0;
+      return this.y_4iwnq9$_0;
     },
     set: function (y) {
-      this.y_vthryo$_0 = y;
+      this.y_4iwnq9$_0 = y;
     }
   });
   GameActor$Fruit.$metadata$ = {
@@ -426,12 +426,10 @@ if (typeof kotlin === 'undefined') {
   };
   function main() {
     var tmp$;
-    (new Game(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE())).start();
+    var game = new Game(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE());
+    game.start();
   }
-  var package$com = _.com || (_.com = {});
-  var package$jeanbarrossilva = package$com.jeanbarrossilva || (package$com.jeanbarrossilva = {});
-  var package$pxl = package$jeanbarrossilva.pxl || (package$jeanbarrossilva.pxl = {});
-  var package$code = package$pxl.code || (package$pxl.code = {});
+  var package$code = _.code || (_.code = {});
   var package$game = package$code.game || (package$code.game = {});
   package$game.Game = Game;
   GameActor$Player$CollisionOccurrence.Registered = GameActor$Player$CollisionOccurrence$Registered;
