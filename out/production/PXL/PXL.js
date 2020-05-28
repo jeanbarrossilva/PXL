@@ -108,7 +108,7 @@ if (typeof kotlin === 'undefined') {
     window.setInterval(Game$addFruits$lambda$lambda(generateRandomCoord, $receiver), 5000);
     return $receiver;
   };
-  function Game$drawActors$lambda$lambda(this$Game) {
+  function Game$drawActors$lambda(this$Game) {
     return function (it) {
       this$Game.drawActors_0();
       return Unit;
@@ -133,7 +133,7 @@ if (typeof kotlin === 'undefined') {
       $receiver_0.fillStyle = tmp$_1;
       $receiver_0.fillRect(element.x, element.y, 1.0, 1.0);
     }
-    window.requestAnimationFrame(Game$drawActors$lambda$lambda(this));
+    window.requestAnimationFrame(Game$drawActors$lambda(this));
   };
   Game.prototype.start = function () {
     this.state_8be2vx$ = GameState$InProgress_getInstance();

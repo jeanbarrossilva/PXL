@@ -61,23 +61,26 @@ class Game(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
             )
         }
     
-    private fun drawActors(): Unit =
+    private fun drawActors() {
         with(canvas) {
             (getContext("2d") as CanvasRenderingContext2D).apply {
                 clearRect(x = 0.0, y = 0.0, w = width.toDouble(), h = height.toDouble())
-                
+            
                 actors.forEach { actor ->
                     fillStyle = when (actor) {
                         is Player -> if (actor == currentPlayer) "blue" else "gray"
                         is Fruit -> "red"
                     }
-                    
+                
                     fillRect(actor.x, actor.y, 1.0, 1.0)
                 }
             }
-            
-            window.requestAnimationFrame { drawActors() }
         }
+    
+        window.requestAnimationFrame {
+            drawActors()
+        }
+    }
     
     fun start() {
         state = InProgress
