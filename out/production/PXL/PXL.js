@@ -15,6 +15,7 @@ if (typeof kotlin === 'undefined') {
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var Collection = Kotlin.kotlin.collections.Collection;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
+  var throwUPAE = Kotlin.throwUPAE;
   GameActor$Player$CollisionOccurrence$Registered.prototype = Object.create(GameActor$Player$CollisionOccurrence.prototype);
   GameActor$Player$CollisionOccurrence$Registered.prototype.constructor = GameActor$Player$CollisionOccurrence$Registered;
   GameActor$Player$CollisionOccurrence$NonExistent.prototype = Object.create(GameActor$Player$CollisionOccurrence.prototype);
@@ -34,7 +35,7 @@ if (typeof kotlin === 'undefined') {
     this.audio_0 = audio;
     this.state_8be2vx$ = GameState$Waiting_getInstance();
     this.actors_0 = ArrayList_init();
-    var $receiver = new GameActor$Player('player1', 8.0, 8.0);
+    var $receiver = new GameActor$Player('player1', void 0, 0.0, 0.0);
     window.addEventListener('keydown', EventListener(Game$currentPlayer$lambda$lambda($receiver, this)), true);
     this.currentPlayer_0 = $receiver;
   }
@@ -122,7 +123,7 @@ if (typeof kotlin === 'undefined') {
     tmp$_0 = this.actors_0.iterator();
     while (tmp$_0.hasNext()) {
       var element = tmp$_0.next();
-      var tmp$_1;
+      var tmp$_1, tmp$_2, tmp$_3;
       if (Kotlin.isType(element, GameActor$Player))
         tmp$_1 = equals(element, this.currentPlayer_0) ? 'blue' : 'gray';
       else if (Kotlin.isType(element, GameActor$Fruit))
@@ -130,7 +131,21 @@ if (typeof kotlin === 'undefined') {
       else
         tmp$_1 = Kotlin.noWhenBranchMatched();
       $receiver_0.fillStyle = tmp$_1;
-      $receiver_0.fillRect(element.x, element.y, 1.0, 1.0);
+      if (Kotlin.isType(element, GameActor$Player) && element.traces > 0) {
+        tmp$_2 = element.traces;
+        for (var traceIndex = 0; traceIndex <= tmp$_2; traceIndex++) {
+          var $receiver_1 = Kotlin.isType(tmp$_3 = document.createElement('canvas'), HTMLCanvasElement) ? tmp$_3 : throwCCE();
+          var tmp$_4;
+          var $receiver_2 = Kotlin.isType(tmp$_4 = $receiver_1.getContext('2d'), CanvasRenderingContext2D) ? tmp$_4 : throwCCE();
+          var tmp$_5;
+          $receiver_2.fillStyle = '#6866CC';
+          if ((tmp$_5 = (new GameActor$Player$Move(element)).getLastKey()) != null) {
+            if (equals(tmp$_5, 'ArrowUp'))
+              $receiver_2.fillRect(element.x, element.y + 1, 1.0, 1.0);
+          }var traceCanvas = $receiver_1;
+          $receiver_0.canvas.appendChild(traceCanvas);
+        }
+      }$receiver_0.fillRect(element.x, element.y, 1.0, 1.0);
     }
     window.requestAnimationFrame(Game$drawActors$lambda$lambda(this));
   };
@@ -150,11 +165,13 @@ if (typeof kotlin === 'undefined') {
     return function (it) {
       var $receiver = new GameActor$Player$Move(this$);
       var this$Game_0 = this$Game;
+      var this$_0 = this$;
       var tmp$;
       $receiver.setMobilityIn_dlq7pi$(this$Game_0, Kotlin.isType(tmp$ = it, KeyboardEvent) ? tmp$ : throwCCE());
       var $receiver_0 = $receiver.collision(this$Game_0.actors_0);
       if (Kotlin.isType($receiver_0, GameActor$Player$CollisionOccurrence$Registered)) {
         this$Game_0.actors_0.remove_11rb$($receiver_0.suspect);
+        this$_0.traces = this$_0.traces + 1 | 0;
         var tmp$_0;
         var $receiver_1 = Kotlin.isType(tmp$_0 = document.createElement('source'), HTMLSourceElement) ? tmp$_0 : throwCCE();
         $receiver_1.src = '../src/coin.mp3';
@@ -197,9 +214,12 @@ if (typeof kotlin === 'undefined') {
       this.y_j9ku3r$_0 = y;
     }
   });
-  function GameActor$Player(id, x, y) {
+  function GameActor$Player(id, traces, x, y) {
+    if (traces === void 0)
+      traces = 0;
     GameActor.call(this, id, x, y);
     this.id_s28m1k$_0 = id;
+    this.traces = traces;
     this.x_liz53d$_0 = x;
     this.y_liz548$_0 = y;
   }
@@ -275,8 +295,23 @@ if (typeof kotlin === 'undefined') {
   function GameActor$Player$Move($outer) {
     this.$outer = $outer;
     this.collision = GameActor$Player$Move$collision$lambda(this.$outer);
+    this.lastKey_2yulp5$_0 = this.lastKey_2yulp5$_0;
   }
+  Object.defineProperty(GameActor$Player$Move.prototype, 'lastKey_0', {
+    get: function () {
+      if (this.lastKey_2yulp5$_0 == null)
+        return throwUPAE('lastKey');
+      return this.lastKey_2yulp5$_0;
+    },
+    set: function (lastKey) {
+      this.lastKey_2yulp5$_0 = lastKey;
+    }
+  });
+  GameActor$Player$Move.prototype.getLastKey = function () {
+    return this.lastKey_2yulp5$_0 != null ? this.lastKey_0 : null;
+  };
   GameActor$Player$Move.prototype.setMobilityIn_dlq7pi$ = function (game, event) {
+    this.lastKey_0 = event.key;
     if (Kotlin.isType(game.state_8be2vx$, GameState$InProgress)) {
       switch (event.key) {
         case 'ArrowUp':

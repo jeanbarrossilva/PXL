@@ -12,7 +12,8 @@ sealed class GameActor(open val id: String, open var x: Double, open var y: Doub
 		
 		inner class Move {
 			val collision = { suspects: List<GameActor> ->
-				suspects.find { it != this@Player && x == it.x && y == it.y }?.let { CollisionOccurrence.Registered(it) } ?: CollisionOccurrence.NonExistent
+				suspects.find { it != this@Player && x == it.x && y == it.y }?.let { CollisionOccurrence.Registered(it) }
+					?: CollisionOccurrence.NonExistent
 			}
 			
 			fun setMobilityIn(game: Game, event: KeyboardEvent) {
