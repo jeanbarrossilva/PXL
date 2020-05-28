@@ -6,10 +6,11 @@ import code.game.GameState.*
 import org.w3c.dom.*
 import org.w3c.dom.events.EventListener
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.random.Random
 
-class Game(val canvas: HTMLCanvasElement) {
+class Game(val canvas: HTMLCanvasElement, private val audio: HTMLAudioElement) {
 	internal var state: GameState = Waiting
 	
 	private val actors = mutableListOf<GameActor>()
@@ -20,7 +21,25 @@ class Game(val canvas: HTMLCanvasElement) {
 			EventListener {
 				Move().apply {
 					setMobilityIn(this@Game, event = it as KeyboardEvent)
-					collision(actors).let { collision -> if (collision is Registered) actors.remove(collision.suspect) }
+					
+					collision(actors).let { collision ->
+						if (collision is Registered) {
+							actors.remove(collision.suspect)
+							
+							run sound@{
+								val source = (document.createElement("source") as HTMLSourceElement).apply {
+									src = "../src/coin.mp3"
+								}
+								
+								audio.apply {
+									currentTime = 0.1
+									
+									appendChild(source)
+									play()
+								}
+							}
+						}
+					}
 				}
 			},
 			true

@@ -28,8 +28,9 @@ if (typeof kotlin === 'undefined') {
   GameState$InProgress.prototype.constructor = GameState$InProgress;
   GameState$Finished.prototype = Object.create(GameState.prototype);
   GameState$Finished.prototype.constructor = GameState$Finished;
-  function Game(canvas) {
+  function Game(canvas, audio) {
     this.canvas = canvas;
+    this.audio_0 = audio;
     this.state_8be2vx$ = GameState$Waiting_getInstance();
     this.actors_0 = ArrayList_init();
     var $receiver = new GameActor$Player('player1', 8.0, 8.0);
@@ -136,9 +137,17 @@ if (typeof kotlin === 'undefined') {
       var tmp$;
       $receiver.setMobilityIn_dlq7pi$(this$Game_0, Kotlin.isType(tmp$ = it, KeyboardEvent) ? tmp$ : throwCCE());
       var $receiver_0 = $receiver.collision(this$Game_0.actors_0);
-      if (Kotlin.isType($receiver_0, GameActor$Player$CollisionOccurrence$Registered))
+      if (Kotlin.isType($receiver_0, GameActor$Player$CollisionOccurrence$Registered)) {
         this$Game_0.actors_0.remove_11rb$($receiver_0.suspect);
-      return Unit;
+        var tmp$_0;
+        var $receiver_1 = Kotlin.isType(tmp$_0 = document.createElement('source'), HTMLSourceElement) ? tmp$_0 : throwCCE();
+        $receiver_1.src = '../src/coin.mp3';
+        var source = $receiver_1;
+        var $receiver_2 = this$Game_0.audio_0;
+        $receiver_2.currentTime = 0.1;
+        $receiver_2.appendChild(source);
+        $receiver_2.play();
+      }return Unit;
     };
   }
   Game.$metadata$ = {
@@ -425,8 +434,8 @@ if (typeof kotlin === 'undefined') {
     interfaces: []
   };
   function main() {
-    var tmp$;
-    var game = new Game(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE());
+    var tmp$, tmp$_0;
+    var game = new Game(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE(), Kotlin.isType(tmp$_0 = document.getElementById('audio'), HTMLAudioElement) ? tmp$_0 : throwCCE());
     game.start();
   }
   var package$code = _.code || (_.code = {});

@@ -7,7 +7,7 @@ import kotlin.browser.document
 
 fun main() {
 	val game =
-		Game(canvas = document.getElementById("canvas") as HTMLCanvasElement)
+		Game(canvas = document.getElementById("canvas") as HTMLCanvasElement, audio = document.getElementById("audio") as HTMLAudioElement)
 	
 	game.start()
 }
