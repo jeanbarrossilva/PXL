@@ -1,8 +1,5 @@
 package code.game
 
-import code.game.GameState.*
-import org.w3c.dom.events.KeyboardEvent
-
 sealed class GameActor(open val id: String, open var x: Double, open var y: Double) {
 	class Player(override val id: String, override var x: Double, override var y: Double) : GameActor(id, x, y) {
 		sealed class CollisionOccurrence {
