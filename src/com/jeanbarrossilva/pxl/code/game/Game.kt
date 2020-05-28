@@ -7,6 +7,7 @@ import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.events.EventListener
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
+import kotlin.random.Random
 
 class Game(val canvas: HTMLCanvasElement) {
 	internal var state: GameState = Waiting
@@ -17,16 +18,44 @@ class Game(val canvas: HTMLCanvasElement) {
 	
 	private val actors = mutableListOf<GameActor>()
 	
+	private fun addFruits() =
+		actors.apply {
+			val randomCoordinate: (Char) -> Double = { name: Char ->
+				Random.nextDouble(
+					when (name) {
+						'x' -> canvas.width.toDouble()
+						'y' -> canvas.height.toDouble()
+						else -> 0.0
+					}
+				).let { generated ->
+					if (none { it is Fruit && generated == (if (name == 'x') it.x else if (name == 'y') it.y else 0) })
+						generated
+					else
+						0.0
+				}
+			}
+			
+			window.setInterval(
+				handler = {
+					val fruit = Fruit(id = "fruit" + lastIndex + 1, x = randomCoordinate('x'), y = randomCoordinate('y'))
+					add(fruit)
+				},
+				timeout = 5000
+			)
+		}
+	
 	private fun drawActors(): Unit =
 		with(canvas) {
 			(getContext("2d") as CanvasRenderingContext2D).apply {
 				clearRect(x = 0.0, y = 0.0, w = width.toDouble(), h = height.toDouble())
 				
-				actors.filterIsInstance<Player>().forEach { player ->
-					fillStyle = if (player == currentPlayer) "blue" else "gray"
-					fillRect(player.x, player.y, 1.0, 1.0)
+				actors.forEach { actor ->
+					fillStyle = when (actor) {
+						is Player -> if (actor == currentPlayer) "yellow" else "gray"
+						is Fruit -> "green"
+					}
 					
-					console.log("[game] ${player.id} has been successfully added.")
+					fillRect(actor.x, actor.y, 1.0, 1.0)
 				}
 			}
 			
@@ -36,6 +65,8 @@ class Game(val canvas: HTMLCanvasElement) {
 	fun start() {
 		state = InProgress
 		actors.add(currentPlayer)
+		
+		addFruits()
 		drawActors()
 		
 		console.log("[game] Game started.")
