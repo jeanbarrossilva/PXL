@@ -1,32 +1,19 @@
 package code.game
 
 import code.game.GameActor.*
+import code.game.GameActor.Player.CollisionOccurrence.*
 import code.game.GameState.*
-import org.w3c.dom.*
-import org.w3c.dom.events.EventListener
-import org.w3c.dom.events.KeyboardEvent
+import org.w3c.dom.CanvasRenderingContext2D
+import org.w3c.dom.HTMLAudioElement
+import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.HTMLSourceElement
+import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.random.Random
 
-class Game(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
-    internal var state: GameState = Waiting
-    private val action = GameAction(game = this)
-    
-    internal var actors = mutableListOf<GameActor>()
-    
-    private val currentPlayer = Player("player1", x = 8.0, y = 8.0).apply player@{
-        window.addEventListener(
-            "keydown",
-            EventListener { event ->
-                action.move(this@player, (event as KeyboardEvent).key)
-                action.removeSuspectWhenCollidedWith(this@player)
-            },
-            true
-        )
-    }
-    
-    private fun addFruits() =
-        actors.apply {
+object GameController {
+    fun addFruitsTo(canvas: HTMLCanvasElement) =
+        GameModel.actors.apply {
             fun generateRandomCoord(name: Char): Double? {
                 val comparable = when (name) {
                     'x' -> canvas.width
@@ -61,41 +48,59 @@ class Game(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
             )
         }
     
-    private fun drawActors() {
+    fun drawActorsOn(canvas: HTMLCanvasElement, currentPlayer: Player) {
         with(canvas) {
             (getContext("2d") as CanvasRenderingContext2D).apply {
                 clearRect(x = 0.0, y = 0.0, w = width.toDouble(), h = height.toDouble())
-            
-                actors.forEach { actor ->
+                
+                GameModel.actors.forEach { actor ->
                     fillStyle = when (actor) {
                         is Player -> if (actor == currentPlayer) "blue" else "gray"
                         is Fruit -> "red"
                     }
-                
+                    
                     fillRect(actor.x, actor.y, 1.0, 1.0)
                 }
             }
         }
-    
+        
         window.requestAnimationFrame {
-            drawActors()
+            drawActorsOn(canvas, currentPlayer)
         }
     }
     
-    fun start() {
-        state = InProgress
-        actors.add(currentPlayer)
-        
-        addFruits()
-        drawActors()
-        
-        console.log("[game] Game started.")
+    fun Player.moveOn(canvas: HTMLCanvasElement, key: String) {
+        if (GameModel.state is InProgress) {
+            if ((key == "ArrowUp"    || key == "w") && y - 1 >= 0)                 --y
+            if ((key == "ArrowLeft"  || key == "a") && x - 1 >= 0)                 --x
+            if ((key == "ArrowRight" || key == "d") && x + 1 < canvas.width)  ++x
+            if ((key == "ArrowDown"  || key == "s") && y + 1 < canvas.height) ++y
+        }
     }
     
-    fun stop() {
-        state = Finished
-        actors.clear()
-        
-        console.log("[game] Game stopped.")
-    }
+    fun removeSuspectWhenCollidedWith(player: Player, audio: HTMLAudioElement) =
+        with(GameModel) {
+            player.collision(actors).let { collision ->
+                if (collision is Registered) {
+                    run sound@{
+                        val source = (document.createElement("source") as HTMLSourceElement).apply {
+                            src = "src/coin.mp3"
+                        }
+                
+                        audio.apply {
+                            preload = "auto"
+                            currentTime = 0.1
+                    
+                            appendChild(source)
+                            play()
+                        }
+                    }
+            
+                    actors.remove(collision.suspect)
+                } else
+                    actors
+                
+                return@let
+            }
+        }
 }

@@ -2,19 +2,19 @@ if (typeof kotlin === 'undefined') {
   throw new Error("Error loading module 'PXL'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'PXL'.");
 }var PXL = function (_, Kotlin) {
   'use strict';
-  var Random = Kotlin.kotlin.random.Random;
+  var Kind_CLASS = Kotlin.Kind.CLASS;
+  var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var equals = Kotlin.equals;
+  var Random = Kotlin.kotlin.random.Random;
   var Throwable = Error;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var get_lastIndex = Kotlin.kotlin.collections.get_lastIndex_55thoc$;
   var toString = Kotlin.toString;
   var Unit = Kotlin.kotlin.Unit;
   var throwCCE = Kotlin.throwCCE;
-  var EventListener = Kotlin.org.w3c.dom.events.EventListener_gbr1zf$;
-  var Kind_CLASS = Kotlin.Kind.CLASS;
-  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var Collection = Kotlin.kotlin.collections.Collection;
-  var Kind_OBJECT = Kotlin.Kind.OBJECT;
+  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
+  var EventListener = Kotlin.org.w3c.dom.events.EventListener_gbr1zf$;
   GameActor$Player$CollisionOccurrence$Registered.prototype = Object.create(GameActor$Player$CollisionOccurrence.prototype);
   GameActor$Player$CollisionOccurrence$Registered.prototype.constructor = GameActor$Player$CollisionOccurrence$Registered;
   GameActor$Player$CollisionOccurrence$NonExistent.prototype = Object.create(GameActor$Player$CollisionOccurrence.prototype);
@@ -29,182 +29,6 @@ if (typeof kotlin === 'undefined') {
   GameState$InProgress.prototype.constructor = GameState$InProgress;
   GameState$Finished.prototype = Object.create(GameState.prototype);
   GameState$Finished.prototype.constructor = GameState$Finished;
-  function Game(canvas, audio) {
-    this.canvas = canvas;
-    this.audio = audio;
-    this.state_8be2vx$ = GameState$Waiting_getInstance();
-    this.action_0 = new GameAction(this);
-    this.actors_8be2vx$ = ArrayList_init();
-    var $receiver = new GameActor$Player('player1', 8.0, 8.0);
-    window.addEventListener('keydown', EventListener(Game$currentPlayer$lambda$lambda(this, $receiver)), true);
-    this.currentPlayer_0 = $receiver;
-  }
-  function Game$addFruits$lambda$generateRandomCoord(this$Game, this$) {
-    return function closure$generateRandomCoord(name) {
-      var tmp$, tmp$_0;
-      switch (name) {
-        case 120:
-          tmp$ = this$Game.canvas.width;
-          break;
-        case 121:
-          tmp$ = this$Game.canvas.height;
-          break;
-        default:tmp$ = 0;
-          break;
-      }
-      var comparable = tmp$;
-      try {
-        var $receiver = Random.Default.nextInt_za3lpa$(comparable);
-        closure$generateRandomCoord;
-        var this$_0 = this$;
-        var closure$generateRandomCoord_0 = closure$generateRandomCoord;
-        var block$result;
-        var none$result;
-        none$break: do {
-          var tmp$_1;
-          if (Kotlin.isType(this$_0, Collection) && this$_0.isEmpty()) {
-            none$result = true;
-            break none$break;
-          }tmp$_1 = this$_0.iterator();
-          while (tmp$_1.hasNext()) {
-            var element = tmp$_1.next();
-            if (equals($receiver, name === 120 ? element.x : name === 121 ? element.y : 0)) {
-              none$result = false;
-              break none$break;
-            }}
-          none$result = true;
-        }
-         while (false);
-        if (none$result) {
-          block$result = $receiver;
-        } else {
-          block$result = closure$generateRandomCoord_0(name);
-        }
-        tmp$_0 = block$result;
-      } catch (e) {
-        if (Kotlin.isType(e, Throwable)) {
-          console.log('[game] Fruit generation is canceled until one of the existent ones is collected.');
-          tmp$_0 = null;
-        } else
-          throw e;
-      }
-      return tmp$_0;
-    };
-  }
-  function Game$addFruits$lambda$lambda(closure$generateRandomCoord, this$) {
-    return function () {
-      var tmp$ = to(closure$generateRandomCoord(120), closure$generateRandomCoord(121));
-      var generatedX = tmp$.component1()
-      , generatedY = tmp$.component2();
-      if (generatedX != null && generatedY != null) {
-        var fruit = new GameActor$Fruit('fruit' + toString(get_lastIndex(this$) + 1 | 0), generatedX, generatedY);
-        this$.add_11rb$(fruit);
-      }return Unit;
-    };
-  }
-  Game.prototype.addFruits_0 = function () {
-    var $receiver = this.actors_8be2vx$;
-    var generateRandomCoord = Game$addFruits$lambda$generateRandomCoord(this, $receiver);
-    window.setInterval(Game$addFruits$lambda$lambda(generateRandomCoord, $receiver), 5000);
-    return $receiver;
-  };
-  function Game$drawActors$lambda(this$Game) {
-    return function (it) {
-      this$Game.drawActors_0();
-      return Unit;
-    };
-  }
-  Game.prototype.drawActors_0 = function () {
-    var $receiver = this.canvas;
-    var tmp$;
-    var $receiver_0 = Kotlin.isType(tmp$ = $receiver.getContext('2d'), CanvasRenderingContext2D) ? tmp$ : throwCCE();
-    $receiver_0.clearRect(0.0, 0.0, $receiver.width, $receiver.height);
-    var tmp$_0;
-    tmp$_0 = this.actors_8be2vx$.iterator();
-    while (tmp$_0.hasNext()) {
-      var element = tmp$_0.next();
-      var tmp$_1;
-      if (Kotlin.isType(element, GameActor$Player))
-        tmp$_1 = equals(element, this.currentPlayer_0) ? 'blue' : 'gray';
-      else if (Kotlin.isType(element, GameActor$Fruit))
-        tmp$_1 = 'red';
-      else
-        tmp$_1 = Kotlin.noWhenBranchMatched();
-      $receiver_0.fillStyle = tmp$_1;
-      $receiver_0.fillRect(element.x, element.y, 1.0, 1.0);
-    }
-    window.requestAnimationFrame(Game$drawActors$lambda(this));
-  };
-  Game.prototype.start = function () {
-    this.state_8be2vx$ = GameState$InProgress_getInstance();
-    this.actors_8be2vx$.add_11rb$(this.currentPlayer_0);
-    this.addFruits_0();
-    this.drawActors_0();
-    console.log('[game] Game started.');
-  };
-  Game.prototype.stop = function () {
-    this.state_8be2vx$ = GameState$Finished_getInstance();
-    this.actors_8be2vx$.clear();
-    console.log('[game] Game stopped.');
-  };
-  function Game$currentPlayer$lambda$lambda(this$Game, this$) {
-    return function (event) {
-      var tmp$, tmp$_0, tmp$_1;
-      tmp$_1 = this$Game.action_0;
-      tmp$_0 = (Kotlin.isType(tmp$ = event, KeyboardEvent) ? tmp$ : throwCCE()).key;
-      tmp$_1.move_7oxxgn$(this$, tmp$_0);
-      this$Game.action_0.removeSuspectWhenCollidedWith_5lkeiv$(this$);
-      return Unit;
-    };
-  }
-  Game.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'Game',
-    interfaces: []
-  };
-  function GameAction(game) {
-    this.game_0 = game;
-  }
-  GameAction.prototype.move_7oxxgn$ = function (player, key) {
-    if (Kotlin.isType(this.game_0.state_8be2vx$, GameState$InProgress)) {
-      if ((equals(key, 'ArrowUp') || equals(key, 'w')) && player.y - 1 >= 0) {
-        player.y = player.y - 1;
-        player.y;
-      }if ((equals(key, 'ArrowLeft') || equals(key, 'a')) && player.x - 1 >= 0) {
-        player.x = player.x - 1;
-        player.x;
-      }if ((equals(key, 'ArrowRight') || equals(key, 'd')) && player.x + 1 < this.game_0.canvas.width) {
-        player.x = player.x + 1;
-        player.x;
-      }if ((equals(key, 'ArrowDown') || equals(key, 's')) && player.y + 1 < this.game_0.canvas.height) {
-        player.y = player.y + 1;
-        player.y;
-      }}};
-  GameAction.prototype.removeSuspectWhenCollidedWith_5lkeiv$ = function (player) {
-    var collision = player.collision(this.game_0.actors_8be2vx$);
-    var receiver = this.game_0;
-    var block$result;
-    if (Kotlin.isType(collision, GameActor$Player$CollisionOccurrence$Registered)) {
-      var tmp$;
-      var $receiver = Kotlin.isType(tmp$ = document.createElement('source'), HTMLSourceElement) ? tmp$ : throwCCE();
-      $receiver.src = 'src/coin.mp3';
-      var source = $receiver;
-      var $receiver_0 = this.game_0.audio;
-      $receiver_0.preload = 'auto';
-      $receiver_0.currentTime = 0.1;
-      $receiver_0.appendChild(source);
-      $receiver_0.play();
-      block$result = receiver.actors_8be2vx$.remove_11rb$(collision.suspect);
-    } else {
-      block$result = receiver.actors_8be2vx$;
-    }
-    return block$result;
-  };
-  GameAction.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'GameAction',
-    interfaces: []
-  };
   function GameActor(id, x, y) {
     this.id_t016m1$_0 = id;
     this.x_j9ku2w$_0 = x;
@@ -394,6 +218,162 @@ if (typeof kotlin === 'undefined') {
     simpleName: 'GameActor',
     interfaces: []
   };
+  function GameController() {
+    GameController_instance = this;
+  }
+  function GameController$addFruitsTo$lambda$generateRandomCoord(closure$canvas, this$) {
+    return function closure$generateRandomCoord(name) {
+      var tmp$, tmp$_0;
+      switch (name) {
+        case 120:
+          tmp$ = closure$canvas.width;
+          break;
+        case 121:
+          tmp$ = closure$canvas.height;
+          break;
+        default:tmp$ = 0;
+          break;
+      }
+      var comparable = tmp$;
+      try {
+        var $receiver = Random.Default.nextInt_za3lpa$(comparable);
+        closure$generateRandomCoord;
+        var this$_0 = this$;
+        var closure$generateRandomCoord_0 = closure$generateRandomCoord;
+        var block$result;
+        var none$result;
+        none$break: do {
+          var tmp$_1;
+          if (Kotlin.isType(this$_0, Collection) && this$_0.isEmpty()) {
+            none$result = true;
+            break none$break;
+          }tmp$_1 = this$_0.iterator();
+          while (tmp$_1.hasNext()) {
+            var element = tmp$_1.next();
+            if (equals($receiver, name === 120 ? element.x : name === 121 ? element.y : 0)) {
+              none$result = false;
+              break none$break;
+            }}
+          none$result = true;
+        }
+         while (false);
+        if (none$result) {
+          block$result = $receiver;
+        } else {
+          block$result = closure$generateRandomCoord_0(name);
+        }
+        tmp$_0 = block$result;
+      } catch (e) {
+        if (Kotlin.isType(e, Throwable)) {
+          console.log('[game] Fruit generation is canceled until one of the existent ones is collected.');
+          tmp$_0 = null;
+        } else
+          throw e;
+      }
+      return tmp$_0;
+    };
+  }
+  function GameController$addFruitsTo$lambda$lambda(closure$generateRandomCoord, this$) {
+    return function () {
+      var tmp$ = to(closure$generateRandomCoord(120), closure$generateRandomCoord(121));
+      var generatedX = tmp$.component1()
+      , generatedY = tmp$.component2();
+      if (generatedX != null && generatedY != null) {
+        var fruit = new GameActor$Fruit('fruit' + toString(get_lastIndex(this$) + 1 | 0), generatedX, generatedY);
+        this$.add_11rb$(fruit);
+      }return Unit;
+    };
+  }
+  GameController.prototype.addFruitsTo_ap7jt0$ = function (canvas) {
+    var $receiver = GameModel_getInstance().actors_8be2vx$;
+    var generateRandomCoord = GameController$addFruitsTo$lambda$generateRandomCoord(canvas, $receiver);
+    window.setInterval(GameController$addFruitsTo$lambda$lambda(generateRandomCoord, $receiver), 5000);
+    return $receiver;
+  };
+  function GameController$drawActorsOn$lambda(closure$canvas, closure$currentPlayer, this$GameController) {
+    return function (it) {
+      this$GameController.drawActorsOn_t7v64p$(closure$canvas, closure$currentPlayer);
+      return Unit;
+    };
+  }
+  GameController.prototype.drawActorsOn_t7v64p$ = function (canvas, currentPlayer) {
+    var tmp$;
+    var $receiver = Kotlin.isType(tmp$ = canvas.getContext('2d'), CanvasRenderingContext2D) ? tmp$ : throwCCE();
+    $receiver.clearRect(0.0, 0.0, canvas.width, canvas.height);
+    var tmp$_0;
+    tmp$_0 = GameModel_getInstance().actors_8be2vx$.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
+      var tmp$_1;
+      if (Kotlin.isType(element, GameActor$Player))
+        tmp$_1 = equals(element, currentPlayer) ? 'blue' : 'gray';
+      else if (Kotlin.isType(element, GameActor$Fruit))
+        tmp$_1 = 'red';
+      else
+        tmp$_1 = Kotlin.noWhenBranchMatched();
+      $receiver.fillStyle = tmp$_1;
+      $receiver.fillRect(element.x, element.y, 1.0, 1.0);
+    }
+    window.requestAnimationFrame(GameController$drawActorsOn$lambda(canvas, currentPlayer, this));
+  };
+  GameController.prototype.moveOn_edy6x2$ = function ($receiver, canvas, key) {
+    if (Kotlin.isType(GameModel_getInstance().state_8be2vx$, GameState$InProgress)) {
+      if ((equals(key, 'ArrowUp') || equals(key, 'w')) && $receiver.y - 1 >= 0) {
+        $receiver.y = $receiver.y - 1;
+        $receiver.y;
+      }if ((equals(key, 'ArrowLeft') || equals(key, 'a')) && $receiver.x - 1 >= 0) {
+        $receiver.x = $receiver.x - 1;
+        $receiver.x;
+      }if ((equals(key, 'ArrowRight') || equals(key, 'd')) && $receiver.x + 1 < canvas.width) {
+        $receiver.x = $receiver.x + 1;
+        $receiver.x;
+      }if ((equals(key, 'ArrowDown') || equals(key, 's')) && $receiver.y + 1 < canvas.height) {
+        $receiver.y = $receiver.y + 1;
+        $receiver.y;
+      }}};
+  GameController.prototype.removeSuspectWhenCollidedWith_lm2a0d$ = function (player, audio) {
+    var $receiver = GameModel_getInstance();
+    var $receiver_0 = player.collision($receiver.actors_8be2vx$);
+    if (Kotlin.isType($receiver_0, GameActor$Player$CollisionOccurrence$Registered)) {
+      var tmp$;
+      var $receiver_1 = Kotlin.isType(tmp$ = document.createElement('source'), HTMLSourceElement) ? tmp$ : throwCCE();
+      $receiver_1.src = 'src/coin.mp3';
+      var source = $receiver_1;
+      audio.preload = 'auto';
+      audio.currentTime = 0.1;
+      audio.appendChild(source);
+      audio.play();
+      $receiver.actors_8be2vx$.remove_11rb$($receiver_0.suspect);
+    } else
+      $receiver.actors_8be2vx$;
+  };
+  GameController.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'GameController',
+    interfaces: []
+  };
+  var GameController_instance = null;
+  function GameController_getInstance() {
+    if (GameController_instance === null) {
+      new GameController();
+    }return GameController_instance;
+  }
+  function GameModel() {
+    GameModel_instance = this;
+    this.state_8be2vx$ = GameState$Waiting_getInstance();
+    this.actors_8be2vx$ = ArrayList_init();
+  }
+  GameModel.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'GameModel',
+    interfaces: []
+  };
+  var GameModel_instance = null;
+  function GameModel_getInstance() {
+    if (GameModel_instance === null) {
+      new GameModel();
+    }return GameModel_instance;
+  }
   function GameState() {
   }
   function GameState$Waiting() {
@@ -446,15 +426,49 @@ if (typeof kotlin === 'undefined') {
     simpleName: 'GameState',
     interfaces: []
   };
+  function GameView(canvas, audio) {
+    this.canvas = canvas;
+    this.audio = audio;
+    var $receiver = new GameActor$Player('player1', 8.0, 8.0);
+    window.addEventListener('keydown', EventListener(GameView$currentPlayer$lambda$lambda($receiver, this)), true);
+    this.currentPlayer_0 = $receiver;
+  }
+  GameView.prototype.start = function () {
+    var $receiver = GameModel_getInstance();
+    $receiver.state_8be2vx$ = GameState$InProgress_getInstance();
+    $receiver.actors_8be2vx$.add_11rb$(this.currentPlayer_0);
+    var $receiver_0 = GameController_getInstance();
+    $receiver_0.addFruitsTo_ap7jt0$(this.canvas);
+    $receiver_0.drawActorsOn_t7v64p$(this.canvas, this.currentPlayer_0);
+    console.log('[game] Game started.');
+  };
+  GameView.prototype.stop = function () {
+    var $receiver = GameModel_getInstance();
+    $receiver.state_8be2vx$ = GameState$Finished_getInstance();
+    $receiver.actors_8be2vx$.clear();
+    console.log('[game] Game stopped.');
+  };
+  function GameView$currentPlayer$lambda$lambda(this$, this$GameView) {
+    return function (event) {
+      var receiver = GameController_getInstance();
+      var this$_0 = this$;
+      var this$GameView_0 = this$GameView;
+      var tmp$;
+      receiver.moveOn_edy6x2$(this$_0, this$GameView_0.canvas, (Kotlin.isType(tmp$ = event, KeyboardEvent) ? tmp$ : throwCCE()).key);
+      receiver.removeSuspectWhenCollidedWith_lm2a0d$(this$_0, this$GameView_0.audio);
+      return Unit;
+    };
+  }
+  GameView.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'GameView',
+    interfaces: []
+  };
   function main() {
     var tmp$, tmp$_0;
-    var game = new Game(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE(), Kotlin.isType(tmp$_0 = document.getElementById('audio'), HTMLAudioElement) ? tmp$_0 : throwCCE());
+    var game = new GameView(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE(), Kotlin.isType(tmp$_0 = document.getElementById('audio'), HTMLAudioElement) ? tmp$_0 : throwCCE());
     game.start();
   }
-  var package$code = _.code || (_.code = {});
-  var package$game = package$code.game || (package$code.game = {});
-  package$game.Game = Game;
-  package$game.GameAction = GameAction;
   GameActor$Player$CollisionOccurrence.Registered = GameActor$Player$CollisionOccurrence$Registered;
   Object.defineProperty(GameActor$Player$CollisionOccurrence, 'NonExistent', {
     get: GameActor$Player$CollisionOccurrence$NonExistent_getInstance
@@ -462,7 +476,15 @@ if (typeof kotlin === 'undefined') {
   GameActor$Player.CollisionOccurrence = GameActor$Player$CollisionOccurrence;
   GameActor.Player = GameActor$Player;
   GameActor.Fruit = GameActor$Fruit;
+  var package$code = _.code || (_.code = {});
+  var package$game = package$code.game || (package$code.game = {});
   package$game.GameActor = GameActor;
+  Object.defineProperty(package$game, 'GameController', {
+    get: GameController_getInstance
+  });
+  Object.defineProperty(package$game, 'GameModel', {
+    get: GameModel_getInstance
+  });
   Object.defineProperty(GameState, 'Waiting', {
     get: GameState$Waiting_getInstance
   });
@@ -473,6 +495,7 @@ if (typeof kotlin === 'undefined') {
     get: GameState$Finished_getInstance
   });
   package$game.GameState = GameState;
+  package$game.GameView = GameView;
   package$code.main = main;
   main();
   Kotlin.defineModule('PXL', _);

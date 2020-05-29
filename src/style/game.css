@@ -1,0 +1,15 @@
+#game {
+    align-self: center;
+    display: flexbox;
+    margin: 0 auto;
+    vertical-align: middle;
+}
+
+#game #canvas {
+    border: 10px solid #CCCCCC;
+    height: 500px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
+    width: 500px;
+}
