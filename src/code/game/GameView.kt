@@ -13,7 +13,7 @@ class GameView(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
             EventListener { event ->
                 with(GameController) {
                     this@player.moveOn(canvas, (event as KeyboardEvent).key)
-                    removeSuspectWhenCollidedWith(this@player, audio)
+                    collectFruitAs(this@player, audio)
                 }
             },
             true

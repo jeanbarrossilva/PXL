@@ -55,11 +55,14 @@ if (typeof kotlin === 'undefined') {
       this.y_j9ku3r$_0 = y;
     }
   });
-  function GameActor$Player(id, x, y) {
+  function GameActor$Player(id, x, y, points) {
+    if (points === void 0)
+      points = 0;
     GameActor.call(this, id, x, y);
     this.id_s28m1k$_0 = id;
     this.x_liz53d$_0 = x;
     this.y_liz548$_0 = y;
+    this.points = points;
     this.collision = GameActor$Player$collision$lambda(this);
   }
   Object.defineProperty(GameActor$Player.prototype, 'id', {
@@ -331,7 +334,7 @@ if (typeof kotlin === 'undefined') {
         $receiver.y = $receiver.y + 1;
         $receiver.y;
       }}};
-  GameController.prototype.removeSuspectWhenCollidedWith_lm2a0d$ = function (player, audio) {
+  GameController.prototype.collectFruitAs_lm2a0d$ = function (player, audio) {
     var $receiver = GameModel_getInstance();
     var $receiver_0 = player.collision($receiver.actors_8be2vx$);
     if (Kotlin.isType($receiver_0, GameActor$Player$CollisionOccurrence$Registered)) {
@@ -343,6 +346,7 @@ if (typeof kotlin === 'undefined') {
       audio.currentTime = 0.1;
       audio.appendChild(source);
       audio.play();
+      player.points = player.points + 1 | 0;
       $receiver.actors_8be2vx$.remove_11rb$($receiver_0.suspect);
     } else
       $receiver.actors_8be2vx$;
@@ -455,7 +459,7 @@ if (typeof kotlin === 'undefined') {
       var this$GameView_0 = this$GameView;
       var tmp$;
       receiver.moveOn_edy6x2$(this$_0, this$GameView_0.canvas, (Kotlin.isType(tmp$ = event, KeyboardEvent) ? tmp$ : throwCCE()).key);
-      receiver.removeSuspectWhenCollidedWith_lm2a0d$(this$_0, this$GameView_0.audio);
+      receiver.collectFruitAs_lm2a0d$(this$_0, this$GameView_0.audio);
       return Unit;
     };
   }

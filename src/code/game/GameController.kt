@@ -78,7 +78,7 @@ object GameController {
         }
     }
     
-    fun removeSuspectWhenCollidedWith(player: Player, audio: HTMLAudioElement) =
+    fun collectFruitAs(player: Player, audio: HTMLAudioElement) =
         with(GameModel) {
             player.collision(actors).let { collision ->
                 if (collision is Registered) {
@@ -95,7 +95,8 @@ object GameController {
                             play()
                         }
                     }
-            
+                    
+                    player.points++
                     actors.remove(collision.suspect)
                 } else
                     actors
