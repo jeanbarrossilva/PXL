@@ -3,21 +3,20 @@
     <head>
         <meta charset="utf-8">
         <title>PXL</title>
+        <link rel="stylesheet" href="src/style/main.css" />
+        <link rel="stylesheet" href="src/style/game.css" />
     </head>
-    <style>
-        #canvas {
-            border: 10px solid #CCCCCC;
-            height: 400px;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            image-rendering: -moz-crisp-edges;
-            width: 400px;
-        }
-    </style>
     <body>
-        <p align="center">
-            <canvas id="canvas" width="10" height="10"></canvas>
-        </p>
+        <div id="game">
+            <div class="container">
+                <canvas id="canvas" width="10" height="10"> />
+            </div>
+            <hr class="horizontal" />
+            <div class="container">
+                <h1 class="title">Ranking</h1>
+                <div id="ranking"></div>
+            </div>
+        </div>
         <audio id="audio"></audio>
 
         <script type="text/javascript" src="out/production/PXL/lib/kotlin.js"></script>

@@ -6,7 +6,7 @@ import org.w3c.dom.events.EventListener
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 
-class GameView(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
+class GameView(val canvas: HTMLCanvasElement, private val ranking: HTMLDivElement, val audio: HTMLAudioElement) {
     private val currentPlayer = GameActor.Player("player1", x = 8.0, y = 8.0).apply player@{
         window.addEventListener(
             "keydown",
@@ -29,6 +29,7 @@ class GameView(val canvas: HTMLCanvasElement, val audio: HTMLAudioElement) {
         with(GameController) {
             addFruitsTo(canvas)
             drawActorsOn(canvas, currentPlayer)
+            configRanking(div = ranking)
         }
         
         console.log("[game] Game started.")

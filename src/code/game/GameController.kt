@@ -3,10 +3,7 @@ package code.game
 import code.game.GameActor.*
 import code.game.GameActor.Player.CollisionOccurrence.*
 import code.game.GameState.*
-import org.w3c.dom.CanvasRenderingContext2D
-import org.w3c.dom.HTMLAudioElement
-import org.w3c.dom.HTMLCanvasElement
-import org.w3c.dom.HTMLSourceElement
+import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.random.Random
@@ -104,4 +101,27 @@ object GameController {
                 return@let
             }
         }
+    
+    fun configRanking(div: HTMLDivElement) {
+        val playersDiv = (document.createElement("div") as HTMLDivElement).apply {
+            GameModel.actors.forEach { actor ->
+                if (actor is Player) {
+                    val playerInfo = (document.createElement("p") as HTMLParagraphElement).apply {
+                        align = "center"
+                        
+                        window.setInterval(
+                            handler = { innerText = "${actor.id} – ${actor.points} points" },
+                            timeout = 500
+                        )
+                    }
+                    
+                    appendChild(playerInfo)
+                }
+            }
+        }
+        
+        div.apply {
+            appendChild(playersDiv)
+        }
+    }
 }

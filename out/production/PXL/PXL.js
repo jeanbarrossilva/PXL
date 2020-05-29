@@ -351,6 +351,30 @@ if (typeof kotlin === 'undefined') {
     } else
       $receiver.actors_8be2vx$;
   };
+  function GameController$configRanking$lambda$lambda$lambda$lambda(closure$actor, this$) {
+    return function () {
+      this$.innerText = closure$actor.id + ' \u2013 ' + closure$actor.points + ' points';
+      return Unit;
+    };
+  }
+  GameController.prototype.configRanking_e0t6x9$ = function (div) {
+    var tmp$;
+    var $receiver = Kotlin.isType(tmp$ = document.createElement('div'), HTMLDivElement) ? tmp$ : throwCCE();
+    var tmp$_0;
+    tmp$_0 = GameModel_getInstance().actors_8be2vx$.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
+      var tmp$_1;
+      if (Kotlin.isType(element, GameActor$Player)) {
+        var $receiver_0 = Kotlin.isType(tmp$_1 = document.createElement('p'), HTMLParagraphElement) ? tmp$_1 : throwCCE();
+        $receiver_0.align = 'center';
+        window.setInterval(GameController$configRanking$lambda$lambda$lambda$lambda(element, $receiver_0), 500);
+        var playerInfo = $receiver_0;
+        $receiver.appendChild(playerInfo);
+      }}
+    var playersDiv = $receiver;
+    div.appendChild(playersDiv);
+  };
   GameController.$metadata$ = {
     kind: Kind_OBJECT,
     simpleName: 'GameController',
@@ -430,8 +454,9 @@ if (typeof kotlin === 'undefined') {
     simpleName: 'GameState',
     interfaces: []
   };
-  function GameView(canvas, audio) {
+  function GameView(canvas, ranking, audio) {
     this.canvas = canvas;
+    this.ranking_0 = ranking;
     this.audio = audio;
     var $receiver = new GameActor$Player('player1', 8.0, 8.0);
     window.addEventListener('keydown', EventListener(GameView$currentPlayer$lambda$lambda($receiver, this)), true);
@@ -444,6 +469,7 @@ if (typeof kotlin === 'undefined') {
     var $receiver_0 = GameController_getInstance();
     $receiver_0.addFruitsTo_ap7jt0$(this.canvas);
     $receiver_0.drawActorsOn_t7v64p$(this.canvas, this.currentPlayer_0);
+    $receiver_0.configRanking_e0t6x9$(this.ranking_0);
     console.log('[game] Game started.');
   };
   GameView.prototype.stop = function () {
@@ -469,8 +495,8 @@ if (typeof kotlin === 'undefined') {
     interfaces: []
   };
   function main() {
-    var tmp$, tmp$_0;
-    var game = new GameView(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE(), Kotlin.isType(tmp$_0 = document.getElementById('audio'), HTMLAudioElement) ? tmp$_0 : throwCCE());
+    var tmp$, tmp$_0, tmp$_1;
+    var game = new GameView(Kotlin.isType(tmp$ = document.getElementById('canvas'), HTMLCanvasElement) ? tmp$ : throwCCE(), Kotlin.isType(tmp$_0 = document.getElementById('ranking'), HTMLDivElement) ? tmp$_0 : throwCCE(), Kotlin.isType(tmp$_1 = document.getElementById('audio'), HTMLAudioElement) ? tmp$_1 : throwCCE());
     game.start();
   }
   GameActor$Player$CollisionOccurrence.Registered = GameActor$Player$CollisionOccurrence$Registered;

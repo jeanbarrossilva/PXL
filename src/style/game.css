@@ -1,8 +1,18 @@
 #game {
-    align-self: center;
-    display: flexbox;
-    margin: 0 auto;
-    vertical-align: middle;
+    align-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    grid-area: 90px;
+    transform: translateY(12%);
+}
+
+#game .container {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#game .container .title {
+    text-align: center;
 }
 
 #game #canvas {
