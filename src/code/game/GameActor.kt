@@ -1,12 +1,8 @@
 package code.game
 
 sealed class GameActor(open val id: String, open var x: Double, open var y: Double) {
-    class Player(
-        override val id: String,
-        override var x: Double,
-        override var y: Double,
-        var points: Int = 0
-    ) : GameActor(id, x, y) {
+    class Player(override val id: String, override var x: Double, override var y: Double, var points: Int = 0)
+        : GameActor(id, x, y) {
         sealed class CollisionOccurrence {
             data class Registered(val suspect: GameActor) : CollisionOccurrence()
             object NonExistent : CollisionOccurrence()
