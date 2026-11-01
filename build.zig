@@ -36,20 +36,30 @@ pub fn build(b: *std.Build) void {
     });
 
     // === RAYLIB: start ===
-    const raylib_dep = b.dependency("raylib_zig", .{
+    const raylib_dependency = b.dependency("raylib_zig", .{
         .target = target,
         .optimize = optimize,
     });
-    const raylib = raylib_dep.module("raylib");
-    const raygui = raylib_dep.module("raygui");
-    const raylib_artifact = raylib_dep.artifact("raylib");
+    const raylib_module = raylib_dependency.module("raylib");
+    const raygui_module = raylib_dependency.module("raygui");
+    const raylib_artifact = raylib_dependency.artifact("raylib");
     mod.linkLibrary(raylib_artifact);
-    mod.addImport("raylib", raylib);
-    mod.addImport("ragui", raygui);
+    mod.addImport("raylib", raylib_module);
+    mod.addImport("ragui", raygui_module);
     exe.root_module.linkLibrary(raylib_artifact);
-    exe.root_module.addImport("raylib", raylib);
-    exe.root_module.addImport("raygui", raygui);
+    exe.root_module.addImport("raylib", raylib_module);
+    exe.root_module.addImport("raygui", raygui_module);
     // === RAYLIB: end   ===
+
+    // === UUID: start   ===
+    const uuid_dependency = b.dependency("uuid", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    const uuid_module = uuid_dependency.module("uuid");
+    mod.addImport("uuid", uuid_module);
+    exe.root_module.addImport("uuid", uuid_module);
+    // === UUID: end     ===
 
     b.installArtifact(exe);
     const run_step = b.step("run", "Run the app");

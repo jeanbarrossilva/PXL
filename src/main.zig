@@ -16,28 +16,39 @@
 
 const pxl = @import("pxl");
 const raylib = @import("raylib");
+const std = @import("std");
 
-const windowSize = pxl.Size.init(pxl.Entity.size * 16);
+const bounds = pxl.Size.init(pxl.Entity.size * 16);
+const fruitSpawningInterval = 4;
 
-pub fn main() !void {
-    var player = pxl.Entity{
-        .x = 0,
-        .y = 0,
-        .direction = .downward,
-        .color = .dark_gray,
-    };
+pub fn main(init: std.process.Init) !void {
+    const io_source = std.Random.IoSource{ .io = init.io };
+    const rng = io_source.interface();
+    var stopwatch = pxl.Stopwatch.init(init.gpa);
+    defer stopwatch.deinit();
+    var player = pxl.Entity.initAsPlayer(rng);
+    var fruits = std.ArrayList(pxl.Entity).empty;
+    defer fruits.deinit(init.gpa);
+    const fruitSpawnScheduleID = try stopwatch.scheduleLap(init.io, 4);
     raylib.setTargetFPS(60);
     raylib.initWindow(
-        @intCast(windowSize.width),
-        @intCast(windowSize.height),
+        @intCast(bounds.width),
+        @intCast(bounds.height),
         "PXL",
     );
     defer raylib.closeWindow();
     while (!raylib.windowShouldClose()) {
-        _ = &player.move(windowSize);
+        stopwatch.tick();
+        _ = &player.move(bounds);
+        if (stopwatch.resetLap(fruitSpawnScheduleID)) {
+            const fruit = pxl.Entity.initAsFruit(rng, bounds, &fruits.items);
+            try fruits.append(init.gpa, fruit);
+        }
         raylib.beginDrawing();
         defer raylib.endDrawing();
         raylib.clearBackground(.black);
+        for (fruits.items) |fruit|
+            fruit.draw();
         player.draw();
     }
 }
